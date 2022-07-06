@@ -1,0 +1,23 @@
+framework module TouchEngine [extern_c] {
+  umbrella header "TouchEngine.h"
+
+  export *
+  module * {
+	  export *
+  }
+  
+  explicit module TEMetal {
+	  header "TEMetal.h"
+	  export *
+  }
+  
+  explicit module TEOpenGL {
+	  header "TEOpenGL.h"
+	  export *
+  }
+  
+  explicit module TEVulkan {
+	  textual header "TEVulkan.h"
+	  export *
+  }
+}
