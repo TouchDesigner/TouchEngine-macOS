@@ -15,28 +15,28 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			FljiO4aI+sEJTnjx11DrVNyLxI0=
+			jEU5+4MbQzxFKKoIfZyX2M3JemU=
 			</data>
 			<key>requirement</key>
-			<string>identifier "ca.derivative.lib.IPM" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Z7MPGSMXH2</string>
+			<string>cdhash H"8c4539fb831b433c4528aa087d9c97d8cdc97a65" or cdhash H"2f3673ac65512b7486eb56cdf4ce549f8acebb17"</string>
 		</dict>
 		<key>Frameworks/libTPC.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			4ItiMWMbzPY0nAlHIVX0/HR1FNU=
+			4O0rnRh6hfTzLbb3VnrGmDjaQ2Y=
 			</data>
 			<key>requirement</key>
-			<string>identifier libTPC and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Z7MPGSMXH2</string>
+			<string>cdhash H"e0ed2b9d187a85f4f32db6f7567ac69838da4366" or cdhash H"455b14e54b722ffe567f785aa5d6dda8338face8"</string>
 		</dict>
 		<key>Frameworks/libTouchEngine.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			OMoOfMqmeoF+wMk269JKrQrjqQI=
+			tZFHmKgNdtdTqImCHQRXOsDmPXU=
 			</data>
 			<key>requirement</key>
-			<string>identifier libTouchEngine and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Z7MPGSMXH2</string>
+			<string>cdhash H"b5914798a80d76d753a889821d04573ac0e63d75" or cdhash H"fd5e64c79d8eb1d94797e117e95e03800c9f9705"</string>
 		</dict>
 		<key>Headers/TEAdapter.h</key>
 		<dict>
