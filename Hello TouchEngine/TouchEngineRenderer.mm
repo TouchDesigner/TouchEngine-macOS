@@ -125,6 +125,9 @@ static void LinkCallback(TEInstance *instance, TELinkEvent event, const char *id
             result = TEInstanceAssociateGraphicsContext(_instance, context);
         }
         
+        // Configuring the instance now without a path allows it to begin some preliminary setup immediately
+        result = TEInstanceConfigure(_instance, nullptr, TETimeExternal);
+        
         if (TEResultGetSeverity(result) == TESeverityError)
         {
             self = nil;
