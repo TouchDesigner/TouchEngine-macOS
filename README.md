@@ -11,13 +11,13 @@ TouchEngine requires an installed version of TouchDesigner to load and work with
 
 The earliest TouchDesigner version which works with this version of TouchEngine is 2020.28110. Generally, the most up-to-date release is recommended.
 
-Users can specify a particular version to use by including a folder named "TouchEngine" alongside the component .tox being loaded. This folder can be a renamed TouchDesigner application, or a file-system link to an installation or application location (either a symbolic link or a macOS Finder alias).
+Users can specify a particular version to use by including a file named "TouchEngine" alongside the component .tox being loaded. This file can be a renamed TouchDesigner application, or a file-system link to an application location (either a symbolic link or a macOS Finder alias).
 
 
 Example Project
 ---------------
 
-The example project "Hello TouchEngine" demonstrates some of the techniques discussed below. The classes prefixed "TCH" may be useful in your own projects to manage resources shared with TouchEngine.
+The example project "Hello TouchEngine" demonstrates some of the techniques discussed below. The classes prefixed "TCH" may be useful in your own projects to manage resources shared with TouchEngine, and to correctly handle some of the considerations detailed below.
 
 
 TEObjects
@@ -65,7 +65,7 @@ An instance requires two callbacks: one for instance events, and one to receive 
         // handle the link event
     }
 
-A single instance can be re-used to load several components. Only one component can be loaded in an instance at a time (but any number of instances can co-exist). Improve performance by re-using an existing instance rather than creating a new one where possible.
+A single instance can be re-used to load several components. Only one component can be loaded in an instance at a time (but any number of instances can co-exist). Improve performance by re-configuring an existing instance rather than creating a new one where possible.
 
 Create an instance:
 
@@ -76,7 +76,7 @@ Create an instance:
         // Continue to use the instance
     }
 
-If working with textures, create and associate a TEGraphicsContext suitable for your needs. A graphics context provides functionality to work with textures using your chosen graphics API. Alternatively you can create and associate a TEAdapter to indicate a device without the full functionality of a graphics context. If neither are associated, the instance will select a device as it sees fit.
+If working with textures, create and associate a TEGraphicsContext suitable for your needs. A graphics context directs TouchEngine to use a specific graphics device, and provides functionality to work with textures using your chosen graphics API. Alternatively you can create and associate a TEAdapter to indicate a device without the full functionality of a graphics context. If neither are associated, the instance will select a device as it sees fit.
 
     // See TEGraphicsContext.h to create a suitable context
     if (result == TEResultSuccess)
@@ -107,15 +107,14 @@ Loading begins immediately.
 
 During loading you will receive link callbacks with the event TELinkEventAdded for any links on the instance.
 
+Once loading has completed you will receive an event callback with the event `TEEventInstanceDidLoad`, and a TEResult indicating success or any warning or error.
+
 An instance is loaded suspended. Once configured, resuming the instance will permit rendering (and start playback in TETimeInternal mode):
 
     if (result == TEResultSuccess)
     {
         result = TEInstanceResume(instance);
     }
-
-
-Once loading has completed you will receive an event callback with the event TEEventInstanceDidLoad, and a TEResult indicating success or any warning or error.
 
 Note that if you are able to call `TEInstanceConfigure()` with a NULL path sometime before loading a component, the instance will perform some pre-loading setup. You can then call `TEInstanceConfigure()` again with a valid path, and the subsequent `TEInstanceLoad()` will complete much faster.
 
@@ -156,6 +155,27 @@ When working with table inputs, to allow the most efficient memory re-use inside
 Set a single string value on a string data input with `TEInstanceLinkSetStringValue()`, or set a table value with `TEInstanceLinkSetTableValue()`. To receive string data values from an output, use `TEInstanceLinkGetObjectValue()` and then use `TEGetType()` on the returned value to determine if it is a TEString or TETable.
 
 
+Menus
+-----
+
+TELinkTypeInt and TELinkTypeString can have a list of choices associated with them, suitable for presentation to the user as a menu.
+
+    TEStringArray *labels = nullptr;
+    result = TEInstanceLinkGetChoiceLabels(instance, identifier, &labels);
+    if (result == TEResultSuccess && labels)
+    {
+        // The link has a menu
+        // ...
+        TERelease(&labels);
+    }
+    else if (result == TEResultSuccess)
+    {
+        // The link does not have a menu
+    }
+
+For TELinkTypeInt, the associated value for a menu item is its index. For TELinkTypeString, `TEInstanceLinkGetChoiceValues()` returns a list of values, ordered to match the labels. Note that this list should not be considered exhaustive and users should be allowed to enter their own values as well as those in this list.
+
+
 Working with TELinkTypeTexture
 ------------------------------
 
@@ -185,11 +205,12 @@ A TEOpenGLContext allows you to work with native OpenGL textures and have the co
 
 If you are setting a shareable texture type on input links directly, TouchEngine will use the lifetime of the TETextures you create to manage the lifetime of internal resources. For this reason, performance is improved by recycling textures in a pool, and keeping the associated TETexture alive for the lifetime of the underlying resource. To know when a texture is in use by TouchEngine, use the TEObjectEvent parameter of the TETexture's callback and monitor TEObjectEventBeginUse and TEObjectEventEndUse. When TEObjectEventEndUse is received, the texture can be returned to your pool for reuse. The example project has a class, `TCHTexturePool`, which manages this for you.
 
-If you are instantiating output textures directly from a shareable type (TEMetalTexture or TEIOSurfaceTexture), then there will usually be benefit in keeping a cache of instantiated textures, as TouchEngine will recycle textures internally. The lifetime of TETextures got from outputs indicates to TouchEngine when the output is in use by you, and so you *must* TERelease them when you are finished with them to allow them to be recycled - ie do *not* TERetain the TETexture itself in your output texture cache, but use the associated shared resource (the `IOSurfaceRef` or `MTLSharedEventHandle`) value to map TETextures to your instantiated textures. You can register a callback for the TETextures you receive from the instance, and monitor TEObjectEventRelease to know when an instantiated texture should be deleted from your cache. OpenGL, this is all handled for you if you use `TEOpenGLContextCreateTexture()` to instantiate the native texture from the shareable type. The example project has a class, `TCHResourceCache`, which manages this for you.
+If you are instantiating output textures directly from a shareable type (TEMetalTexture or TEIOSurfaceTexture), then there will usually be benefit in keeping a cache of instantiated textures, as TouchEngine will recycle textures internally. The lifetime of TETextures got from outputs indicates to TouchEngine when the output is in use by you, and so you *must* TERelease them when you are finished with them to allow them to be recycled - ie do *not* TERetain the TETexture itself in your output texture cache, but use the associated shared resource (the `IOSurfaceRef` or `MTLSharedEventHandle`) value to map TETextures to your instantiated textures. You can register a callback for the TETextures you receive from the instance, and monitor TEObjectEventRelease to know when an instantiated texture should be deleted from your cache. The example project has a class, `TCHResourceCache`, which manages this for you. When using an OpenGL context, this is all handled for you if you use `TEOpenGLContextCreateTexture()` to instantiate the native texture from the shareable type.
 
 Setting an input (Metal):
 
-    TEMetalTexture *texture = TEDMetalTextureCreate(tex, TETextureOriginTopLeft, kTETextureComponentMapIdentity, NULL, NULL);
+    // Here we set a short-lived texture, but see above for guidance around texture re-use
+    TEMetalTexture *texture = TEMetalTextureCreate(tex, TETextureOriginTopLeft, kTETextureComponentMapIdentity, NULL, NULL);
     TEResult result = TEInstanceLinkSetTextureValue(instance, identifier, texture, context);
     // Release the texture - the instance will have retained it if necessary
     TERelease(&texture);
@@ -231,7 +252,7 @@ When transferring a texture *from* TouchEngine, `TEInstanceGetTextureTransfer()`
 
 Because a texture transfer can require a Vulkan memory barrier operation, extra steps are required. TEVulkan.h has functions which supplement the texture transfer functions in TEInstance.h when working with a Vulkan graphics context.
 
-Texture transfers are required for inputs and outputs, which are always TEVulkanTextures. The transfer is done with a Metal shared event (as a TEMetalSemaphore). These can be imported as Vulkan timeline semaphores using the available extensions.
+Texture transfers are required for inputs and outputs, which are either TEIOSurfaceTextures or TEMetalTextures. The transfer is done with a Metal shared event (as a TEMetalSemaphore). The texture and semaphore types can be imported as Vulkan images and timeline semaphores using the available Vulkan extensions.
 
 When transferring textures the contents of which should be kept (ie transferring inputs to TouchEngine, and outputs from TouchEngine), a Vulkan memory barrier is required. For inputs, perform the barrier to the image layout returned from `TEInstanceGetVulkanReleaseImageLayout()` and then provide the old and new layouts to `TEInstanceAddVulkanTextureTransfer()`. You can change the image layout the instance transfers textures to by calling `TEInstanceSetVulkanAcquireImageLayout()` once. This will determine the new layout you receive from `TEInstanceGetVulkanTextureTransfer()`.
 
@@ -239,27 +260,6 @@ When transferring textures the contents of which can be discarded, use a regular
 
 When transferring an texture *to* TouchEngine, schedule a signal for the semaphore with a known value, then pass the semaphore and value to `TEInstanceAddVulkanTextureTransfer()` or `TEInstanceAddTextureTransfer()`. TouchEngine will schedule a wait for the provided value before utilising the texture.
 When transferring a texture *from* TouchEngine, `TEInstanceGetTextureTransfer()` or `TEInstanceGetVulkanTextureTransfer()` will return a semaphore and wait-value. Schedule a wait for the returned value before utilising the texture.
-
-
-Menus
------
-
-TELinkTypeInt and TELinkTypeString can have a list of choices associated with them, suitable for presentation to the user as a menu.
-
-    TEStringArray *labels = nullptr;
-    result = TEInstanceLinkGetChoiceLabels(instance, identifier, &labels);
-    if (result == TEResultSuccess && labels)
-    {
-        // The link has a menu
-        // ...
-        TERelease(&labels);
-    }
-    else if (result == TEResultSuccess)
-    {
-        // The link does not have a menu
-    }
-
-For TELinkTypeInt, the associated value for a menu item is its index. For TELinkTypeString, `TEInstanceLinkGetChoiceValues()` returns a list of values, ordered to match the labels. Note that this list should not be considered exhaustive and users should be allowed to enter their own values as well as those in this list.
 
 
 Allowing users to reference known TouchDesigner objects
