@@ -20,6 +20,12 @@ Example Project
 The example project "Hello TouchEngine" demonstrates some of the techniques discussed below. The classes prefixed "TCH" may be useful in your own projects to manage resources shared with TouchEngine, and to correctly handle some of the considerations detailed below.
 
 
+API Documentation
+-----------------
+
+The TouchEngine API is documented in the TouchEngine headers. This document gives a high-level overview and details some best practices for working with the API.
+
+
 TEObjects
 ---------
 
@@ -258,7 +264,7 @@ When transferring textures the contents of which should be kept (ie transferring
 
 When transferring textures the contents of which can be discarded, use a regular texture transfer with `TEInstanceAddTextureTransfer()` or `TEInstanceGetTextureTransfer()`.
 
-When transferring an texture *to* TouchEngine, schedule a signal for the semaphore with a known value, then pass the semaphore and value to `TEInstanceAddVulkanTextureTransfer()` or `TEInstanceAddTextureTransfer()`. TouchEngine will schedule a wait for the provided value before utilising the texture.
+When transferring a texture *to* TouchEngine, schedule a signal for the semaphore with a known value, then pass the semaphore and value to `TEInstanceAddVulkanTextureTransfer()` or `TEInstanceAddTextureTransfer()`. TouchEngine will schedule a wait for the provided value before utilising the texture.
 When transferring a texture *from* TouchEngine, `TEInstanceGetTextureTransfer()` or `TEInstanceGetVulkanTextureTransfer()` will return a semaphore and wait-value. Schedule a wait for the returned value before utilising the texture.
 
 
