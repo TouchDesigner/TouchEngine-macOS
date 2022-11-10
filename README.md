@@ -26,6 +26,12 @@ API Documentation
 The TouchEngine API is documented in the TouchEngine headers. This document gives a high-level overview and details some best practices for working with the API.
 
 
+Using TouchEngine
+-----------------------------
+
+In Xcode, add TouchEngine.framework to the "Frameworks, Libraries, and Embedded Content" section for your target in the "General" tab for your application's target. Select "Embed and Sign" in the "Embed" menu. `#include <TouchEngine/TouchEngine.h>` in any source file you wish to use TouchEngine in. Note that to graphics-specific functions are not included in the umbrella header. For example to use Metal, add `#include <TouchEngine/TEMetal.h>` to your includes.
+
+
 TEObjects
 ---------
 
@@ -166,17 +172,15 @@ Menus
 
 TELinkTypeInt and TELinkTypeString can have a list of choices associated with them, suitable for presentation to the user as a menu.
 
-    TEStringArray *labels = nullptr;
-    result = TEInstanceLinkGetChoiceLabels(instance, identifier, &labels);
-    if (result == TEResultSuccess && labels)
+    if (TEInstanceLinkHasChoices(instance, identifier))
     {
-        // The link has a menu
-        // ...
-        TERelease(&labels);
-    }
-    else if (result == TEResultSuccess)
-    {
-        // The link does not have a menu
+        TEStringArray *labels = nullptr;
+        result = TEInstanceLinkGetChoiceLabels(instance, identifier, &labels);
+        if (result == TEResultSuccess && labels)
+        {
+            // ...
+            TERelease(&labels);
+        }
     }
 
 For TELinkTypeInt, the associated value for a menu item is its index. For TELinkTypeString, `TEInstanceLinkGetChoiceValues()` returns a list of values, ordered to match the labels. Note that this list should not be considered exhaustive and users should be allowed to enter their own values as well as those in this list.
