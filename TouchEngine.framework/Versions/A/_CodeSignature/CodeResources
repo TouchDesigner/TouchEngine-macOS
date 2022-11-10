@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		I2nP3T6ShgUiyE576EvzUC7q5jI=
+		lm/EUUJesJ8XfyKjHUBj8s/IwQE=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,28 +15,28 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			jEU5+4MbQzxFKKoIfZyX2M3JemU=
+			Y3aEcYYw1LYi1G0Ju4wPKr69RTE=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"8c4539fb831b433c4528aa087d9c97d8cdc97a65" or cdhash H"2f3673ac65512b7486eb56cdf4ce549f8acebb17"</string>
+			<string>cdhash H"637684718630d4b622d46d09bb8c0f2abebd4531" or cdhash H"f9cbe007b8e9d98eb36b59283cd9a1f19468731a"</string>
 		</dict>
 		<key>Frameworks/libTPC.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			4O0rnRh6hfTzLbb3VnrGmDjaQ2Y=
+			FQaSmh7gswoBQyKygXK2sfka1bY=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"e0ed2b9d187a85f4f32db6f7567ac69838da4366" or cdhash H"455b14e54b722ffe567f785aa5d6dda8338face8"</string>
+			<string>cdhash H"1506929a1ee0b30a014322b28172b6b1f91ad5b6" or cdhash H"7bc945bf7bc1ee2925c1e39830a9fe04e01bc2bc"</string>
 		</dict>
 		<key>Frameworks/libTouchEngine.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			tZFHmKgNdtdTqImCHQRXOsDmPXU=
+			/vS/5x8O5a7LgdCIiUK+SGzaIaQ=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"b5914798a80d76d753a889821d04573ac0e63d75" or cdhash H"fd5e64c79d8eb1d94797e117e95e03800c9f9705"</string>
+			<string>cdhash H"fef4bfe71f0ee5aecb81d0888942be486cda21a4" or cdhash H"e15807ef8f2ecd6a601299aadaea84b317e34a62"</string>
 		</dict>
 		<key>Headers/TEAdapter.h</key>
 		<dict>
@@ -70,14 +70,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			j97elZAvdq4hOMMstPAlDn2RLwIyfl09YOzl8XxSqWw=
+			LSPEQSlUSqa8+dfAfPxnfUwYAyV3gDfv8worTBUdDWg=
 			</data>
 		</dict>
 		<key>Headers/TEMetal.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Ciz1kms+NvuEvVjzVLcTDtDfjgKCRgLaB77hi97yB4E=
+			r/l/sIcAFVed2M0RaeVfiBVSb9kkXmecT4I4BM14AzA=
 			</data>
 		</dict>
 		<key>Headers/TEObject.h</key>
@@ -91,14 +91,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			C6F6js9kCTp9S+JsshhN93NrLqoW4ZIO3AmSGEeH3ss=
+			A5yaFfWyCNCRvohQKvSU/khT0G5b95ICGOnFpBcp/T8=
 			</data>
 		</dict>
 		<key>Headers/TEResult.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FN7T8RnCrMtDY00uHV9bvkiGZzAsfmRJYglsqrSCecI=
+			PRaAZgLGQv0tH5fwa5WiGDev9q7Xj4ewfWJGuR349qo=
 			</data>
 		</dict>
 		<key>Headers/TESemaphore.h</key>
@@ -119,14 +119,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ivwkCLba2Kn216PPlMRmPhdSdN2kXTSPe3zIwdyx2do=
+			/lYZtm1yCBFRDmxFOwUz5v0j4cv78IDcFYs9gT/z+K0=
 			</data>
 		</dict>
 		<key>Headers/TEVulkan.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CloHeJcJW3I1IMbtJhIquIdGz+vKl5eW1bMwvRB4J/w=
+			Q2uvgZaxmOrG4JvR3B3nOrHcFZLG70SRepioLTm2NzE=
 			</data>
 		</dict>
 		<key>Headers/TouchEngine.h</key>
@@ -147,14 +147,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			S+TWFIIkEGrAuZzd9PMfLQpAJxvD/BFhgXM4OTdonoE=
+			XE1GpkNIF3qVrVkvOaCOqiorgbyoIL86+U1KkphYv84=
 			</data>
 		</dict>
 		<key>Resources/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			G8HFgZkR5Xi/x1YotBxv4tDLMOLVBIQSg8BiNMPQpQE=
+			rzpglUFPgxfERwtnT4hEupUApRGnj6Wa2Kdpdcn7wf8=
 			</data>
 		</dict>
 	</dict>

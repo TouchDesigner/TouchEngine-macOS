@@ -161,6 +161,8 @@ static void LinkCallback(TEInstance *instance, TELinkEvent event, const char *id
                 {
                     self.firstTexInput = identifier;
                 }
+                // We will never get this value
+                TEInstanceLinkSetInterest(_instance, identifier.UTF8String, TELinkInterestNoValues);
             }
             else
             {
@@ -169,6 +171,10 @@ static void LinkCallback(TEInstance *instance, TELinkEvent event, const char *id
                     self.firstTexOutput = identifier;
                 }
             }
+        }
+        else
+        {
+            TEInstanceLinkSetInterest(_instance, identifier.UTF8String, TELinkInterestNone);
         }
     }
 }
@@ -210,6 +216,9 @@ static void LinkCallback(TEInstance *instance, TELinkEvent event, const char *id
                                              previous.waitEvent.engineSemaphore,
                                              previous.waitValue);
             }
+            
+            // Let the instance know we won't get this value again until it changes
+            TEInstanceLinkSetInterest(_instance, identifier.UTF8String, TELinkInterestSubsequentValues);
         }
     }
 }

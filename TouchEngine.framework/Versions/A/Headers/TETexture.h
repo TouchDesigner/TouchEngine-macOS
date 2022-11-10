@@ -46,29 +46,23 @@ typedef TE_ENUM(TETextureType, int32_t)
 typedef TE_ENUM(TETextureFormat, int32_t)
 {
 	TETextureFormatInvalid,
-	TETextureFormatR8,
-	TETextureFormatR16,
+	TETextureFormatR8Unorm,	
+	TETextureFormatR16Unorm,
 	TETextureFormatR16F,
-	TETextureFormatR32,
 	TETextureFormatR32F,
-	TETextureFormatRG8,
-	TETextureFormatRG16,
+	TETextureFormatRG8Unorm,
+	TETextureFormatRG16Unorm,
 	TETextureFormatRG16F,
-	TETextureFormatRG32,
 	TETextureFormatRG32F,
-	TETextureFormatRGB8,
-	TETextureFormatRGB11F,
-	TETextureFormatRGB16,
-	TETextureFormatRGB16F,
-	TETextureFormatRGB32,
-	TETextureFormatRGB32F,
-	TETextureFormatRGB10_A2,
-	TETextureFormatRGBA8,
-	TETextureFormatSRGB8,
-	TETextureFormatSRGBA8,
-	TETextureFormatRGBA16,
+	TETextureFormatRG11B10F,
+	TETextureFormatRGB10_A2Unorm,
+	TETextureFormatBGR10_A2Unorm,
+	TETextureFormatRGBA8Unorm,
+	TETextureFormatBGRA8Unorm,
+	TETextureFormatSRGBA8Unorm,
+	TETextureFormatSBGRA8Unorm,
+	TETextureFormatRGBA16Unorm,
 	TETextureFormatRGBA16F,
-	TETextureFormatRGBA32,
 	TETextureFormatRGBA32F
 };
 
@@ -96,7 +90,12 @@ typedef TE_ENUM(TETextureOrigin, int32_t)
 	TETextureOriginBottomLeft
 };
 
-extern TE_EXPORT const struct TETextureComponentMap kTETextureComponentMapIdentity;
+static const TETextureComponentMap kTETextureComponentMapIdentity = {
+	TETextureComponentSourceRed,
+	TETextureComponentSourceGreen,
+	TETextureComponentSourceBlue,
+	TETextureComponentSourceAlpha
+};
 
 typedef TEObject TETexture;
 

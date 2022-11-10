@@ -244,6 +244,33 @@ typedef TE_ENUM(TELinkDomain, int32_t)
 	TELinkDomainOperator,
 };
 
+typedef TE_ENUM(TELinkInterest, int32_t)
+{
+	/*
+	 No TELinkEvents will be received
+	 You must not get the value of the link
+	 */
+	TELinkInterestNone,
+
+	/*
+	 TELinkEventValueChange will not be received
+	 You must not get the value of the link
+	 */
+	TELinkInterestNoValues,
+
+	/*
+	 You must not get the value of the link until after TELinkEventValueChange has next been received
+	 After TELinkEventValueChange is received, the interest will change to TELinkInterestAll
+	 */
+	TELinkInterestSubsequentValues,
+
+	/*
+	 All TELinksEvents will be received
+	 The caller may get the value of the link
+	 */
+	TELinkInterestAll,
+};
+
 typedef struct TEInstance_ TEInstance;
 typedef struct TEAdapter_ TEAdapter;
 typedef TEObject TEGraphicsContext;
@@ -549,7 +576,7 @@ TE_EXPORT TEResult TEInstanceSetStatisticsCallback(TEInstance *instance, TEInsta
 /*
  Returns via 'types' the TETextureTypes supported by the instance.
  This may change during configuration of an instance, and must be queried after receiving TEEventInstanceReady
- 'types' is an array of TETextureType
+ 'types' is an array of TETextureType, or NULL, in which case the value at counts is set to the number of available types
  'count' is a pointer to an int32_t which should be set to the number of elements in 'types'.
  If this function returns TEResultSuccess, 'count' is set to the number of TETextureType filled in 'types'
  If this function returns TEResultInsufficientMemory, the value at 'count' was too small to return all the types, and
@@ -560,9 +587,23 @@ TE_EXPORT TEResult TEInstanceSetStatisticsCallback(TEInstance *instance, TEInsta
 TE_EXPORT TEResult TEInstanceGetSupportedTextureTypes(TEInstance *instance, TETextureType types[TE_NULLABLE], int32_t *count);
 
 /*
+ Returns via 'formats' the TETextureFormats supported by the instance.
+ This may change during configuration of an instance, and must be queried after receiving TEEventInstanceReady
+ Versions of this function exist for each graphics API and those versions should be preferred over this one, as they
+ can express types supported by future versions of TouchDesigner
+ 'formats' is an array of TETextureFormat, or NULL, in which case the value at counts is set to the number of available formats
+ 'count' is a pointer to an int32_t which should be set to the number of elements in 'formats'.
+ If this function returns TEResultSuccess, 'count' is set to the number of TETextureFormat filled in 'formats'
+ If this function returns TEResultInsufficientMemory, the value at 'count' was too small to return all the formats, and
+ 	'count' has been set to the number of available formats. Resize 'formats' appropriately and call the function again to
+ 	retrieve the full array of formats. 
+ */
+TE_EXPORT TEResult TEInstanceGetSupportedTextureFormats(TEInstance *instance, TETextureFormat formats[TE_NULLABLE], int32_t *count);
+
+/*
  Returns via 'types' the TESemaphoreTypes supported by the instance.
  This may change during configuration of an instance, and must be queried after receiving TEEventInstanceReady
- 'types' is an array of TESemaphoreType
+ 'types' is an array of TESemaphoreType, or NULL, in which case the value at counts is set to the number of available types
  'count' is a pointer to an int32_t which should be set to the number of elements in 'types'.
  If this function returns TEResultSuccess, 'count' is set to the number of TESemaphoreType filled in 'types'
  If this function returns TEResultInsufficientMemory, the value at 'count' was too small to return all the types, and
@@ -674,6 +715,12 @@ TE_EXPORT TEResult TEInstanceLinkGetInfo(TEInstance *instance, const char *ident
 TE_EXPORT TEResult TEInstanceLinkGetState(TEInstance *instance, const char *identifier, struct TELinkState * TE_NULLABLE * TE_NONNULL state);
 
 /*
+ Returns true if the link has a list of choices associated with it, suitable for presentation to the user as a menu.
+ Only TELinkTypeInt and TELinkTypeString may have a list of choices.
+ */
+TE_EXPORT bool TEInstanceLinkHasChoices(TEInstance *instance, const char *identifier);
+
+/*
  On return 'labels' is a list of labels suitable for presentation to the user as options for choosing a value for the link denoted by 'identifier'.
  If 'identifier' does not offer a list of options then 'labels' will be set to NULL.
  Only TELinkTypeInt and TELinkTypeString may have a list of choices. For TELinkTypeInt, the corresponding value is the index of the label
@@ -691,6 +738,16 @@ TE_EXPORT TEResult TEInstanceLinkGetChoiceLabels(TEInstance *instance, const cha
  The caller is responsible for releasing the returned TEStringArray using TERelease().
 */
 TE_EXPORT TEResult TEInstanceLinkGetChoiceValues(TEInstance *instance, const char *identifier, struct TEStringArray * TE_NULLABLE * TE_NONNULL values);
+
+/*
+ Notifies the instance of the caller's interest in a link
+ The default for all links is TELinkInterestAll
+ Setting TELinkInterestNone or TELinkInterestNoValues permits the instance to reduce the work done for those links
+ After getting a value, setting TELinkInterestSubsequentValues can allow the instance to release or re-use resources sooner
+ */
+TE_EXPORT TEResult TEInstanceLinkSetInterest(TEInstance *instance, const char *identifier, TELinkInterest interest);
+
+TE_EXPORT TELinkInterest TEInstanceLinkGetInterest(TEInstance *instance, const char *identifier);
 
 /*
  Getting Link Values

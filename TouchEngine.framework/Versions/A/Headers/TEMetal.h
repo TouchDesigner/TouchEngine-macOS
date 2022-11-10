@@ -20,6 +20,7 @@
 #include <TouchEngine/TETexture.h>
 #include <TouchEngine/TEResult.h>
 #include <TouchEngine/TEGraphicsContext.h>
+#include <TouchEngine/TEInstance.h>
 
 #import <Metal/Metal.h>
 
@@ -56,6 +57,9 @@ MTLSharedEventHandle *TEMetalSemaphoreGetSharedEventHandle(TEMetalSemaphore *sem
 TE_EXPORT API_AVAILABLE(macos(10.14))
 TEResult TEMetalSemaphoreSetCallback(TEMetalSemaphore *semaphore, TEMetalSemaphoreCallback TE_NULLABLE callback, void * TE_NULLABLE info);
 
+
+TE_EXPORT API_AVAILABLE(macos(10.15))
+TETextureComponentMap TETextureComponentMapCreateFromMetal(MTLTextureSwizzleChannels channels);
 
 /*
  Metal Textures - see TETexture.h for functions common to all textures
@@ -107,6 +111,23 @@ typedef struct TEMetalContext_ TEMetalContext;
  Returns TEResultSucccess or an error
  */
 TE_EXPORT TEResult TEMetalContextCreate(id<MTLDevice> device, TEMetalContext * TE_NULLABLE * TE_NONNULL context);
+
+/*
+ Supported Metal Pixel Formats
+ */
+
+/*
+ Returns via 'formats' the MTLPixelFormats supported by the instance.
+ This may change during configuration of an instance, and must be queried after receiving TEEventInstanceReady
+ 'formats' is an array of MTLPixelFormat, or NULL, in which case the value at counts is set to the number of available formats.
+ 'count' is a pointer to an int32_t which should be set to the number of elements in 'formats'.
+ If this function returns TEResultSuccess, 'count' is set to the number of MTLPixelFormats filled in 'formats'
+ If this function returns TEResultInsufficientMemory, the value at 'count' was too small to return all the formats, and
+ 	'count' has been set to the number of available formats. Resize 'formats' appropriately and call the function again to
+ 	retrieve the full array of formats. 
+ */
+TE_EXPORT TEResult TEInstanceGetSupportedMetalPixelFormats(TEInstance *instance, MTLPixelFormat formats[TE_NULLABLE], int32_t *count);
+
 
 TE_ASSUME_NONNULL_END
 

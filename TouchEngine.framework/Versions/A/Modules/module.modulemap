@@ -3,21 +3,22 @@ framework module TouchEngine [extern_c] {
 
   export *
   module * {
-	  export *
+    export *
   }
   
   explicit module TEMetal {
-	  header "TEMetal.h"
-	  export *
+    requires objc
+    header "TEMetal.h"
+    export *
   }
   
   explicit module TEOpenGL {
-	  header "TEOpenGL.h"
-	  export *
+    header "TEOpenGL.h"
+    export *
   }
   
   explicit module TEVulkan {
-	  textual header "TEVulkan.h"
-	  export *
+    textual header "TEVulkan.h"
+    export *
   }
 }

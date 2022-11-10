@@ -20,9 +20,10 @@
 #import <TouchEngine/TEMetal.h>
 
 @interface TCHTexture (TouchEngine)
-+ (MTLPixelFormat)metalPixelFormatForFormat:(TETextureFormat)format map:(TETextureComponentMap)map;
++ (MTLPixelFormat)metalPixelFormatForFormat:(TETextureFormat)format;
 + (TETextureFormat)formatForMetalPixelFormat:(MTLPixelFormat)format;
-+ (TETextureComponentMap)componentMapForMetalPixelFormat:(MTLPixelFormat)format;
++ (TETextureComponentMap)mapForMetalSwizzle:(MTLTextureSwizzleChannels)swizzle;
++ (MTLTextureSwizzleChannels)metalSwizzleForMap:(TETextureComponentMap)map;
 - (instancetype)initWithMTLTexture:(id<MTLTexture>)metal forTETexture:(TETexture *)texture;
 @property (readonly) TETexture *engineTexture;
 @end

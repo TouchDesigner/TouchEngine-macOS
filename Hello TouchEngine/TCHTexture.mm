@@ -20,19 +20,58 @@
 	TouchObject<TETexture> _engineTexture;
 }
 
-
-+ (TETextureComponentMap)componentMapForMetalPixelFormat:(MTLPixelFormat)format
++ (TETextureComponentMap)mapForMetalSwizzle:(MTLTextureSwizzleChannels)swizzle
 {
-	switch (format)
-	{
-		case MTLPixelFormatBGRA8Unorm:
-		case MTLPixelFormatBGRA8Unorm_sRGB:
-			return TETextureComponentMap{TETextureComponentSourceBlue, TETextureComponentSourceGreen, TETextureComponentSourceRed, TETextureComponentSourceAlpha};
-		case MTLPixelFormatA8Unorm:
-			return TETextureComponentMap{TETextureComponentSourceZero, TETextureComponentSourceZero, TETextureComponentSourceZero, TETextureComponentSourceRed};
-		default:
-			return kTETextureComponentMapIdentity;
-	}
+    auto swizzleChannel = [](MTLTextureSwizzle s) constexpr {
+        switch (s)
+        {
+            case MTLTextureSwizzleOne:
+                return TETextureComponentSourceOne;
+            case MTLTextureSwizzleZero:
+                return TETextureComponentSourceZero;
+            case MTLTextureSwizzleRed:
+                return TETextureComponentSourceRed;
+            case MTLTextureSwizzleGreen:
+                return TETextureComponentSourceGreen;
+            case MTLTextureSwizzleBlue:
+                return TETextureComponentSourceBlue;
+            case MTLTextureSwizzleAlpha:
+                return TETextureComponentSourceAlpha;
+        }
+    };
+    TETextureComponentMap map;
+    map.r = swizzleChannel(swizzle.red);
+    map.g = swizzleChannel(swizzle.green);
+    map.b = swizzleChannel(swizzle.blue);
+    map.a = swizzleChannel(swizzle.alpha);
+    return map;
+}
+
++ (MTLTextureSwizzleChannels)metalSwizzleForMap:(TETextureComponentMap)map
+{
+    auto swizzleChannel = [](TETextureComponentSource s) constexpr {
+        switch (s)
+        {
+            case TETextureComponentSourceOne:
+                return MTLTextureSwizzleOne;
+            case TETextureComponentSourceZero:
+                return MTLTextureSwizzleZero;
+            case TETextureComponentSourceRed:
+                return MTLTextureSwizzleRed;
+            case TETextureComponentSourceGreen:
+                return MTLTextureSwizzleGreen;
+            case TETextureComponentSourceBlue:
+                return MTLTextureSwizzleBlue;
+            case TETextureComponentSourceAlpha:
+                return MTLTextureSwizzleAlpha;
+        }
+    };
+    MTLTextureSwizzleChannels channels;
+    channels.red = swizzleChannel(map.r);
+    channels.green = swizzleChannel(map.g);
+    channels.blue = swizzleChannel(map.b);
+    channels.alpha = swizzleChannel(map.a);
+    return channels;
 }
 
 + (TETextureFormat)formatForMetalPixelFormat:(MTLPixelFormat)format
@@ -40,42 +79,39 @@
 	switch (format)
 	{
 		case MTLPixelFormatR8Unorm:
-		case MTLPixelFormatA8Unorm:
-			return TETextureFormatR8;
+			return TETextureFormatR8Unorm;
 		case MTLPixelFormatR16Unorm:
-			return TETextureFormatR16;
+			return TETextureFormatR16Unorm;
 		case MTLPixelFormatR16Float:
 			return TETextureFormatR16F;
-		case MTLPixelFormatR32Uint:
-			return TETextureFormatR32;
 		case MTLPixelFormatR32Float:
 			return TETextureFormatR32F;
 		case MTLPixelFormatRG8Unorm:
-			return TETextureFormatRG8;
+			return TETextureFormatRG8Unorm;
 		case MTLPixelFormatRG16Unorm:
-			return TETextureFormatRG16;
+			return TETextureFormatRG16Unorm;
 		case MTLPixelFormatRG16Float:
 			return TETextureFormatRG16F;
-		case MTLPixelFormatRG32Uint:
-			return TETextureFormatRG32;
 		case MTLPixelFormatRG32Float:
 			return TETextureFormatRG32F;
 		case MTLPixelFormatRGB10A2Unorm:
-			return TETextureFormatRGB10_A2;
+			return TETextureFormatRGB10_A2Unorm;
+        case MTLPixelFormatBGR10A2Unorm:
+            return TETextureFormatBGR10_A2Unorm;
         case MTLPixelFormatRG11B10Float:
-            return TETextureFormatRGB11F;
+            return TETextureFormatRG11B10F;
 		case MTLPixelFormatRGBA8Unorm:
+            return TETextureFormatRGBA8Unorm;
 		case MTLPixelFormatBGRA8Unorm:
-			return TETextureFormatRGBA8;
+            return TETextureFormatBGRA8Unorm;
 		case MTLPixelFormatRGBA8Unorm_sRGB:
+            return TETextureFormatSRGBA8Unorm;
 		case MTLPixelFormatBGRA8Unorm_sRGB:
-			return TETextureFormatSRGBA8;
+			return TETextureFormatSBGRA8Unorm;
 		case MTLPixelFormatRGBA16Unorm:
-			return TETextureFormatRGBA16;
+			return TETextureFormatRGBA16Unorm;
 		case MTLPixelFormatRGBA16Float:
 			return TETextureFormatRGBA16F;
-		case MTLPixelFormatRGBA32Uint:
-			return TETextureFormatRGBA32;
 		case MTLPixelFormatRGBA32Float:
 			return TETextureFormatRGBA32F;
 		default:
@@ -83,66 +119,47 @@
 	}
 }
 
-#define IS_IDENTITY(x) (x.r == TETextureComponentSourceRed && x.g == TETextureComponentSourceGreen && x.b == TETextureComponentSourceBlue && x.a == TETextureComponentSourceAlpha)
-#define IS_BGRA(x) (x.r == TETextureComponentSourceBlue && x.g == TETextureComponentSourceGreen && x.b == TETextureComponentSourceRed && x.a == TETextureComponentSourceAlpha)
-
-+ (MTLPixelFormat)metalPixelFormatForFormat:(TETextureFormat)format map:(TETextureComponentMap)map
++ (MTLPixelFormat)metalPixelFormatForFormat:(TETextureFormat)format
 {
 	switch (format)
 	{
-		case TETextureFormatR8:
-			if (map.a == TETextureComponentSourceRed)
-				return MTLPixelFormatA8Unorm;
+		case TETextureFormatR8Unorm:
 			return MTLPixelFormatR8Unorm;
-		case TETextureFormatR16:
+		case TETextureFormatR16Unorm:
 			return MTLPixelFormatR16Unorm;
 		case TETextureFormatR16F:
 			return MTLPixelFormatR16Float;
-		case TETextureFormatR32:
-			return MTLPixelFormatR32Uint;
 		case TETextureFormatR32F:
 			return MTLPixelFormatR32Float;
-		case TETextureFormatRG8:
+		case TETextureFormatRG8Unorm:
 			return MTLPixelFormatRG8Unorm;
-		case TETextureFormatRG16:
+		case TETextureFormatRG16Unorm:
 			return MTLPixelFormatRG16Unorm;
 		case TETextureFormatRG16F:
 			return MTLPixelFormatRG16Float;
-		case TETextureFormatRG32:
-			return MTLPixelFormatRG32Uint;
 		case TETextureFormatRG32F:
 			return MTLPixelFormatRG32Float;
-		case TETextureFormatRGB10_A2:
+		case TETextureFormatRGB10_A2Unorm:
 			return MTLPixelFormatRGB10A2Unorm;
-        case TETextureFormatRGB11F:
+        case TETextureFormatBGR10_A2Unorm:
+            return MTLPixelFormatBGR10A2Unorm;
+        case TETextureFormatRG11B10F:
             return MTLPixelFormatRG11B10Float;
-		case TETextureFormatRGBA8:
-			if (IS_IDENTITY(map))
-				return MTLPixelFormatRGBA8Unorm;
-			else if (IS_BGRA(map))
-				return MTLPixelFormatBGRA8Unorm;
-			break;
-		case TETextureFormatSRGBA8:
-			if (IS_IDENTITY(map))
-				return MTLPixelFormatRGBA8Unorm_sRGB;
-			else if (IS_BGRA(map))
-				return MTLPixelFormatBGRA8Unorm_sRGB;
-			break;
-		case TETextureFormatRGBA16:
+		case TETextureFormatRGBA8Unorm:
+            return MTLPixelFormatRGBA8Unorm;
+        case TETextureFormatBGRA8Unorm:
+            return MTLPixelFormatBGRA8Unorm;
+		case TETextureFormatSRGBA8Unorm:
+            return MTLPixelFormatRGBA8Unorm_sRGB;
+        case TETextureFormatSBGRA8Unorm:
+            return MTLPixelFormatBGRA8Unorm_sRGB;
+		case TETextureFormatRGBA16Unorm:
 			return MTLPixelFormatRGBA16Unorm;
 		case TETextureFormatRGBA16F:
 			return MTLPixelFormatRGBA16Float;
-		case TETextureFormatRGBA32:
-			return MTLPixelFormatRGBA32Uint;
 		case TETextureFormatRGBA32F:
 			return MTLPixelFormatRGBA32Float;
-		case TETextureFormatRGB8:
-		case TETextureFormatSRGB8:
-		case TETextureFormatRGB16:
-		case TETextureFormatRGB16F:
-		case TETextureFormatRGB32:
-		case TETextureFormatRGB32F:
-		default:
+        case TETextureFormatInvalid:
 			break;
 	}
 	return MTLPixelFormatInvalid;
@@ -153,12 +170,14 @@
 	TouchObject<TETexture> engine;
 	if (texture.isShareable)
 	{
-		engine.take(TEMetalTextureCreate(texture, TETextureOriginTopLeft, kTETextureComponentMapIdentity, nullptr, nullptr));
+		engine.take(TEMetalTextureCreate(texture, TETextureOriginTopLeft,
+                                         [TCHTexture mapForMetalSwizzle:texture.swizzle],
+                                         nullptr, nullptr));
 	}
 	else if (texture.iosurface)
 	{
 		TETextureFormat format = [TCHTexture formatForMetalPixelFormat:texture.pixelFormat];
-		TETextureComponentMap map = [TCHTexture componentMapForMetalPixelFormat:texture.pixelFormat];
+        TETextureComponentMap map = [TCHTexture mapForMetalSwizzle:texture.swizzle];
 		if (format != TETextureFormatInvalid)
 		{
 			engine.take(TEIOSurfaceTextureCreate(texture.iosurface,

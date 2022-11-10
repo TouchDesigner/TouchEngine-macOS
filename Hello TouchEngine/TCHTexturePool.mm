@@ -610,14 +610,14 @@ static int blockWidthForPixelFormat(MTLPixelFormat format)
                                                   [TCHTexture formatForMetalPixelFormat:mtl.pixelFormat],
                                                   0,
                                                   TETextureOriginTopLeft,
-                                                  [TCHTexture componentMapForMetalPixelFormat:mtl.pixelFormat],
+                                                  [TCHTexture mapForMetalSwizzle:mtl.swizzle],
                                                   SurfaceCallback, (__bridge  void *)self));
         }
         else
         {
             _object.take(TEMetalTextureCreate(mtl,
                                               TETextureOriginTopLeft,
-                                              [TCHTexture componentMapForMetalPixelFormat:mtl.pixelFormat],
+                                              [TCHTexture mapForMetalSwizzle:mtl.swizzle],
                                               TextureCallback, (__bridge void *)self));
         }
         _texture = mtl;

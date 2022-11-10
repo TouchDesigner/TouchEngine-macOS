@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		CvH5TP+/jn8kdWema8hMMxiQROc=
+		1QiHH3G28mKb2mTzLHmQJgtz2Aw=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,7 +15,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			j1wCGTjmGlQKBkYXRsCvFSkjpRsMMilFjB/RQwhu3BM=
+			alWx+mWD5/qjNxDu8crvV74k7B7iIFklzpTrquPD1Mg=
 			</data>
 		</dict>
 		<key>ca.derivative.IPMAgent</key>
@@ -25,7 +25,7 @@
 			A7BvpyV97YiKlyvwg5YuBJXKM8A=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"03b06fa7257ded888a972bf083962e0495ca33c0" or cdhash H"1a677490af7ec7398e64cea4f8c8e7ff343d7fd6"</string>
+			<string>cdhash H"03b06fa7257ded888a972bf083962e0495ca33c0"</string>
 		</dict>
 	</dict>
 	<key>rules</key>

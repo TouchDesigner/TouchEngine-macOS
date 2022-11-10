@@ -99,10 +99,12 @@ static void MetalSharedEventCallback(MTLSharedEventHandle *handle, TEObjectEvent
 			{
 				TETextureFormat format = TEIOSurfaceTextureGetFormat((TEIOSurfaceTexture *)texture);
 				TETextureComponentMap map = TETextureGetComponentMap(texture);
-				MTLTextureDescriptor *descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:[TCHTexture metalPixelFormatForFormat:format map:map]
+				MTLTextureDescriptor *descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:[TCHTexture metalPixelFormatForFormat:format]
 																									  width:IOSurfaceGetWidth(surface)
 																									 height:IOSurfaceGetHeight(surface)
 																								  mipmapped:NO];
+                descriptor.swizzle = [TCHTexture metalSwizzleForMap:map];
+                
 				tex = [self.device newTextureWithDescriptor:descriptor iosurface:surface plane:0];
 				if (tex)
 				{

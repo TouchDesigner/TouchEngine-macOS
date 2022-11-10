@@ -76,7 +76,12 @@ TE_EXPORT TEResult TEVulkanSemaphoreSetCallback(TEVulkanSemaphore *semaphore, TE
  			(or VK_EXT_metal_objects)
  */
 
-extern TE_EXPORT const struct VkComponentMapping kTEVkComponentMappingIdentity;
+static const struct VkComponentMapping kTEVkComponentMappingIdentity = {
+	VK_COMPONENT_SWIZZLE_IDENTITY,
+	VK_COMPONENT_SWIZZLE_IDENTITY,
+	VK_COMPONENT_SWIZZLE_IDENTITY,
+	VK_COMPONENT_SWIZZLE_IDENTITY
+};
 
 typedef struct TEVulkanTexture_ TEVulkanTexture;
 
@@ -141,6 +146,23 @@ TE_EXPORT int TEVulkanTextureGetHeight(const TEVulkanTexture *texture);
  */
 TE_EXPORT TEResult TEVulkanTextureSetCallback(TEVulkanTexture *texture, TEVulkanTextureCallback TE_NULLABLE callback, void * TE_NULLABLE info);
 
+
+/*
+ Supported Vulkan Texture Formats
+ */
+
+/*
+ Returns via 'formats' the VkFormat supported by the instance.
+ This may change during configuration of an instance, and must be queried after receiving TEEventInstanceReady
+ 'formats' is an array of VkFormat, or NULL, in which case the value at counts is set to the number of available formats.
+ 'count' is a pointer to an int32_t which should be set to the number of elements in 'formats'.
+ If this function returns TEResultSuccess, 'count' is set to the number of VkFormats filled in 'formats'
+ If this function returns TEResultInsufficientMemory, the value at 'count' was too small to return all the formats, and
+ 	'count' has been set to the number of available formats. Resize 'formats' appropriately and call the function again to
+ 	retrieve the full array of formats. 
+ */
+TE_EXPORT TEResult TEInstanceGetSupportedVkFormats(TEInstance *instance, VkFormat formats[TE_NULLABLE], int32_t *count);
+
 #endif // _WIN32
 
 /*
@@ -157,18 +179,17 @@ TE_EXPORT bool TEInstanceDoesVulkanTextureOwnershipTransfer(TEInstance *instance
 /*
  Returns the VkImageLayout to be used by the caller as the 'newLayout' member of a VkImageMemoryBarrier(2)
 	when transferring ownership of a texture to the instance.
+ This may change during configuration of an instance, and must be queried after receiving TEEventInstanceReady
  'instance' is an instance which has previously had a TEVulkanContext associated with it.
- 'scope' must be TEScopeInput - output texture content should be treated as discarded after use
  */
-TE_EXPORT VkImageLayout TEInstanceGetVulkanReleaseImageLayout(TEInstance *instance, TEScope scope);
+TE_EXPORT VkImageLayout TEInstanceGetVulkanInputReleaseImageLayout(TEInstance *instance);
 
 /*
  Set the VkImageLayout to be used by the instance as the 'newLayout' member of a VkImageMemoryBarrier(2)
   as part of the release operation after using a texture
  'instance' is an instance which has previously had a TEVulkanContext associated with it.
- 'scope' must be TEScopeOutput - input texture content will be treated as discarded by the instance
  */
-TE_EXPORT TEResult TEInstanceSetVulkanAcquireImageLayout(TEInstance *instance, TEScope scope, VkImageLayout newLayout);
+TE_EXPORT TEResult TEInstanceSetVulkanOutputAcquireImageLayout(TEInstance *instance, VkImageLayout newLayout);
 
 /*
  Provide the instance with values it will need for an acquire operation to transfer ownership to the instance
