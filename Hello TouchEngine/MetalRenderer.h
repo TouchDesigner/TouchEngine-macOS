@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithView:(nonnull MTKView *)mtkView;
 @property (readwrite) BOOL useMetalSharedTextures;
 @property (readwrite, weak) id<MetalRendererDelegate> delegate;
+@property (readwrite, strong) NSColor *backgroundColor;
+@property (readwrite, strong) NSColor *foregroundColor;
 @property (readonly) id<MTLDevice> device;
 @property (readonly, strong) TCHSharedTexture *inputTexture;
 /*

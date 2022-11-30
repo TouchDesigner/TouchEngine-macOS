@@ -80,6 +80,9 @@
 			self = nil;
 			return self;
 		}
+        
+        _backgroundColor = [NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+        _foregroundColor = [NSColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
 	}
 	return self;
 }
@@ -257,7 +260,11 @@
 		
 		const float point = ((0.8 - 0.6) * sin([NSDate timeIntervalSinceReferenceDate]) + 0.8 + 0.6) / 2.;
 		
-		const TextureFillFragmentArguments arguments = {{halfw, halfh}, point};
+        const TextureFillFragmentArguments arguments = {{halfw, halfh},
+            point,
+            {static_cast<float>(self.backgroundColor.redComponent), static_cast<float>(self.foregroundColor.redComponent)},
+            {static_cast<float>(self.backgroundColor.greenComponent), static_cast<float>(self.foregroundColor.greenComponent)},
+            {static_cast<float>(self.backgroundColor.blueComponent), static_cast<float>(self.foregroundColor.blueComponent)}};
 		
 		[encoder setVertexBytes:quadVertices
 						 length:sizeof(quadVertices)

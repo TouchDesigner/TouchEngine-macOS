@@ -15,6 +15,11 @@
 #import "ViewController.h"
 #import <MetalKit/MetalKit.h>
 #import "TCHSharedTexture.h"
+#import "MetalRendererAnimation.h"
+
+@interface ViewController ()
+@property (readwrite, strong) NSAnimation *animation;
+@end
 
 @implementation ViewController {
 	MetalRenderer *_renderer;
@@ -76,6 +81,15 @@
     }
 }
 
+- (void)setBackground:(NSColor *)bg foreground:(NSColor *)fg
+{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        self.animation = [[MetalRendererAnimation alloc] initForRenderer:self->_renderer background:bg foreground:fg];
+        self.animation.delegate = self;
+        [self.animation startAnimation];
+    }];
+}
+
 - (void)engineLoadDidComplete:(NSError *)error
 {
 	if (!error)
@@ -83,10 +97,23 @@
 		[_engine setInputTexture:_renderer.inputTexture];
 		[_engine resume:&error];
 	}
-    
+ 
     if (error)
     {
         [self engineError:error];
+    }
+    else
+    {
+        [self setBackground:[NSColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:1.0]
+                 foreground:[NSColor colorWithRed:1.0 green:0.8 blue:0.8 alpha:1.0]];
+    }
+}
+
+- (void)animationDidEnd:(NSAnimation *)animation
+{
+    if ([animation isEqual:self.animation])
+    {
+        self.animation = nil;
     }
 }
 
@@ -95,6 +122,7 @@
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self presentError:error modalForWindow:self.view.window delegate:nil didPresentSelector:nil contextInfo:nil];
     }];
+    [self setBackground:[NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0] foreground:[NSColor colorWithRed:0.8 green:0.4 blue:0.4 alpha:1.0]];
 }
 
 - (TCHSharedTexture *)engineOutputDidChange:(TCHSharedTexture *)texture

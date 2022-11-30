@@ -17,7 +17,7 @@
 #import "TouchEngineRenderer.h"
 #import "MetalRenderer.h"
 
-@interface ViewController : NSViewController <TouchEngineRenderDelegate, MetalRendererDelegate>
+@interface ViewController : NSViewController <TouchEngineRenderDelegate, MetalRendererDelegate, NSAnimationDelegate>
 @property (nonatomic, weak) IBOutlet MTKView *MTKView;
 @end
 

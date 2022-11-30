@@ -49,10 +49,11 @@ fillFragmentShader(FillRasterizerData in [[stage_in]],
 	float edge = min(mid.x, mid.y) * arguments->scale;
 	
 	float amount = smoothstep(edge, edge - 3, offset);
-	
-	amount = mix(0.4, 0.9, amount);
-	
-	return float4(amount, amount, amount, 1.0);
+		
+	return float4(mix(arguments->red.x, arguments->red.y, amount),
+                  mix(arguments->green.x, arguments->green.y, amount),
+                  mix(arguments->blue.x, arguments->blue.y, amount),
+                  1.0);
 }
 
 struct DrawRasterizerData

@@ -26,6 +26,9 @@ typedef struct
 {
 	vector_float2 midpoint;
 	float scale;
+    vector_float2 red;
+    vector_float2 green;
+    vector_float2 blue;
 } TextureFillFragmentArguments;
 
 typedef struct

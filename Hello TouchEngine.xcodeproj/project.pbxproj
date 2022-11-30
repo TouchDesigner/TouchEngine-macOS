@@ -18,6 +18,7 @@
 		558D6CF02811AF9D0036F5AB /* TouchEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 558D6CEE2811AF9D0036F5AB /* TouchEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		558D6CF9281BD9030036F5AB /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 558D6CF8281BD9030036F5AB /* UniformTypeIdentifiers.framework */; };
 		55B591E6288EFBCB00E4E73F /* TCHTexturePool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55B591E5288EFBCB00E4E73F /* TCHTexturePool.mm */; };
+		55D4BD542937DFDC00F71BBC /* MetalRendererAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D4BD532937DFDC00F71BBC /* MetalRendererAnimation.m */; };
 		55E526A72875B8B20043868A /* MetalRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55E526A62875B8B20043868A /* MetalRenderer.mm */; };
 		55E526AC287849CE0043868A /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 55E526AB287849CE0043868A /* Shaders.metal */; };
 		55E526AE28784FEE0043868A /* displace.tox in Resources */ = {isa = PBXBuildFile; fileRef = 55E526AD28784FD90043868A /* displace.tox */; };
@@ -60,6 +61,8 @@
 		558D6CFA281BD96C0036F5AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		55B591E4288EFBCB00E4E73F /* TCHTexturePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCHTexturePool.h; sourceTree = "<group>"; };
 		55B591E5288EFBCB00E4E73F /* TCHTexturePool.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TCHTexturePool.mm; sourceTree = "<group>"; };
+		55D4BD522937DFDC00F71BBC /* MetalRendererAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalRendererAnimation.h; sourceTree = "<group>"; };
+		55D4BD532937DFDC00F71BBC /* MetalRendererAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetalRendererAnimation.m; sourceTree = "<group>"; };
 		55E526A52875B8B20043868A /* MetalRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalRenderer.h; sourceTree = "<group>"; };
 		55E526A62875B8B20043868A /* MetalRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalRenderer.mm; sourceTree = "<group>"; };
 		55E526AA2878496D0043868A /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 				55B591E4288EFBCB00E4E73F /* TCHTexturePool.h */,
 				55B591E5288EFBCB00E4E73F /* TCHTexturePool.mm */,
 				5546B00528E7255D0045809C /* TCH_TouchEngine.h */,
+				55D4BD522937DFDC00F71BBC /* MetalRendererAnimation.h */,
+				55D4BD532937DFDC00F71BBC /* MetalRendererAnimation.m */,
 			);
 			path = "Hello TouchEngine";
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 				558D6CDC2811AF830036F5AB /* AppDelegate.m in Sources */,
 				55F2EDC52887F7620038362A /* TCHSharedEvent.mm in Sources */,
 				55B591E6288EFBCB00E4E73F /* TCHTexturePool.mm in Sources */,
+				55D4BD542937DFDC00F71BBC /* MetalRendererAnimation.m in Sources */,
 				55E526AC287849CE0043868A /* Shaders.metal in Sources */,
 				55555DBA287C86AD006AA5C0 /* TCHSharedTexture.m in Sources */,
 			);
