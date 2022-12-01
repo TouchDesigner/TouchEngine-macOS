@@ -283,12 +283,3 @@ If you need to use domains in UI, the two domains which users might expect to be
 |----------------------|----------|-------------|
 |TELinkDomainParameter |Parameter |par          |
 |TELinkDomainOperator  |Operator  |op           |
-
-
-Known Issues
-------------
-
-The following will be addressed in future updates:
-
-- Some texture formats will not work as expected
-- Compressed texture formats are not supported at all
