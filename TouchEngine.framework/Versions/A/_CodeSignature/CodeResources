@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		lm/EUUJesJ8XfyKjHUBj8s/IwQE=
+		3HTRTBxTX0tjWnOSesYUIYag+uE=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,28 +15,28 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			Y3aEcYYw1LYi1G0Ju4wPKr69RTE=
+			TDGdA52A1X8mchYK+Y4LeHQn+8w=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"637684718630d4b622d46d09bb8c0f2abebd4531" or cdhash H"f9cbe007b8e9d98eb36b59283cd9a1f19468731a"</string>
+			<string>identifier "ca.derivative.lib.IPM" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Z7MPGSMXH2</string>
 		</dict>
 		<key>Frameworks/libTPC.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			FQaSmh7gswoBQyKygXK2sfka1bY=
+			r0PKjujdHjwqlOGC8fQFz2/1lrE=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"1506929a1ee0b30a014322b28172b6b1f91ad5b6" or cdhash H"7bc945bf7bc1ee2925c1e39830a9fe04e01bc2bc"</string>
+			<string>identifier libTPC and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Z7MPGSMXH2</string>
 		</dict>
 		<key>Frameworks/libTouchEngine.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			/vS/5x8O5a7LgdCIiUK+SGzaIaQ=
+			jrxJkct9J4dfw4UGfYZ2XOwTo/A=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"fef4bfe71f0ee5aecb81d0888942be486cda21a4" or cdhash H"e15807ef8f2ecd6a601299aadaea84b317e34a62"</string>
+			<string>identifier libTouchEngine and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Z7MPGSMXH2</string>
 		</dict>
 		<key>Headers/TEAdapter.h</key>
 		<dict>
@@ -70,14 +70,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			LSPEQSlUSqa8+dfAfPxnfUwYAyV3gDfv8worTBUdDWg=
+			dZ08dhwQM/981up53Fu3EYAygBrFWQgzdcN7BzjEu+s=
 			</data>
 		</dict>
 		<key>Headers/TEMetal.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			r/l/sIcAFVed2M0RaeVfiBVSb9kkXmecT4I4BM14AzA=
+			GXg1iinq65eGS799EfBA1Y0w3ehKwb9yY7bFyG7dwpI=
 			</data>
 		</dict>
 		<key>Headers/TEObject.h</key>
@@ -119,14 +119,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/lYZtm1yCBFRDmxFOwUz5v0j4cv78IDcFYs9gT/z+K0=
+			UNNB0hEIsyVzkcoPcZYsTvz5Xng7lyF1HAnk7/Z8q0k=
 			</data>
 		</dict>
 		<key>Headers/TEVulkan.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Q2uvgZaxmOrG4JvR3B3nOrHcFZLG70SRepioLTm2NzE=
+			zQunsqGhgXImYE8iyiGgQFP2ENe88m29bKVn6Pvr0Ig=
 			</data>
 		</dict>
 		<key>Headers/TouchEngine.h</key>
@@ -154,7 +154,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			rzpglUFPgxfERwtnT4hEupUApRGnj6Wa2Kdpdcn7wf8=
+			5YvmxEomq2LaXOw69ABBkgYOE1oQEhwsMk+7WPJPEL8=
 			</data>
 		</dict>
 	</dict>

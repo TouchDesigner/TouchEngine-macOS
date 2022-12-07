@@ -22,56 +22,56 @@
 
 + (TETextureComponentMap)mapForMetalSwizzle:(MTLTextureSwizzleChannels)swizzle
 {
-    auto swizzleChannel = [](MTLTextureSwizzle s) constexpr {
-        switch (s)
-        {
-            case MTLTextureSwizzleOne:
-                return TETextureComponentSourceOne;
-            case MTLTextureSwizzleZero:
-                return TETextureComponentSourceZero;
-            case MTLTextureSwizzleRed:
-                return TETextureComponentSourceRed;
-            case MTLTextureSwizzleGreen:
-                return TETextureComponentSourceGreen;
-            case MTLTextureSwizzleBlue:
-                return TETextureComponentSourceBlue;
-            case MTLTextureSwizzleAlpha:
-                return TETextureComponentSourceAlpha;
-        }
-    };
-    TETextureComponentMap map;
-    map.r = swizzleChannel(swizzle.red);
-    map.g = swizzleChannel(swizzle.green);
-    map.b = swizzleChannel(swizzle.blue);
-    map.a = swizzleChannel(swizzle.alpha);
-    return map;
+	auto swizzleChannel = [](MTLTextureSwizzle s) constexpr {
+		switch (s)
+		{
+			case MTLTextureSwizzleOne:
+				return TETextureComponentSourceOne;
+			case MTLTextureSwizzleZero:
+				return TETextureComponentSourceZero;
+			case MTLTextureSwizzleRed:
+				return TETextureComponentSourceRed;
+			case MTLTextureSwizzleGreen:
+				return TETextureComponentSourceGreen;
+			case MTLTextureSwizzleBlue:
+				return TETextureComponentSourceBlue;
+			case MTLTextureSwizzleAlpha:
+				return TETextureComponentSourceAlpha;
+		}
+	};
+	TETextureComponentMap map;
+	map.r = swizzleChannel(swizzle.red);
+	map.g = swizzleChannel(swizzle.green);
+	map.b = swizzleChannel(swizzle.blue);
+	map.a = swizzleChannel(swizzle.alpha);
+	return map;
 }
 
 + (MTLTextureSwizzleChannels)metalSwizzleForMap:(TETextureComponentMap)map
 {
-    auto swizzleChannel = [](TETextureComponentSource s) constexpr {
-        switch (s)
-        {
-            case TETextureComponentSourceOne:
-                return MTLTextureSwizzleOne;
-            case TETextureComponentSourceZero:
-                return MTLTextureSwizzleZero;
-            case TETextureComponentSourceRed:
-                return MTLTextureSwizzleRed;
-            case TETextureComponentSourceGreen:
-                return MTLTextureSwizzleGreen;
-            case TETextureComponentSourceBlue:
-                return MTLTextureSwizzleBlue;
-            case TETextureComponentSourceAlpha:
-                return MTLTextureSwizzleAlpha;
-        }
-    };
-    MTLTextureSwizzleChannels channels;
-    channels.red = swizzleChannel(map.r);
-    channels.green = swizzleChannel(map.g);
-    channels.blue = swizzleChannel(map.b);
-    channels.alpha = swizzleChannel(map.a);
-    return channels;
+	auto swizzleChannel = [](TETextureComponentSource s) constexpr {
+		switch (s)
+		{
+			case TETextureComponentSourceOne:
+				return MTLTextureSwizzleOne;
+			case TETextureComponentSourceZero:
+				return MTLTextureSwizzleZero;
+			case TETextureComponentSourceRed:
+				return MTLTextureSwizzleRed;
+			case TETextureComponentSourceGreen:
+				return MTLTextureSwizzleGreen;
+			case TETextureComponentSourceBlue:
+				return MTLTextureSwizzleBlue;
+			case TETextureComponentSourceAlpha:
+				return MTLTextureSwizzleAlpha;
+		}
+	};
+	MTLTextureSwizzleChannels channels;
+	channels.red = swizzleChannel(map.r);
+	channels.green = swizzleChannel(map.g);
+	channels.blue = swizzleChannel(map.b);
+	channels.alpha = swizzleChannel(map.a);
+	return channels;
 }
 
 + (TETextureFormat)formatForMetalPixelFormat:(MTLPixelFormat)format
@@ -96,16 +96,16 @@
 			return TETextureFormatRG32F;
 		case MTLPixelFormatRGB10A2Unorm:
 			return TETextureFormatRGB10_A2Unorm;
-        case MTLPixelFormatBGR10A2Unorm:
-            return TETextureFormatBGR10_A2Unorm;
-        case MTLPixelFormatRG11B10Float:
-            return TETextureFormatRG11B10F;
+		case MTLPixelFormatBGR10A2Unorm:
+			return TETextureFormatBGR10_A2Unorm;
+		case MTLPixelFormatRG11B10Float:
+			return TETextureFormatRG11B10F;
 		case MTLPixelFormatRGBA8Unorm:
-            return TETextureFormatRGBA8Unorm;
+			return TETextureFormatRGBA8Unorm;
 		case MTLPixelFormatBGRA8Unorm:
-            return TETextureFormatBGRA8Unorm;
+			return TETextureFormatBGRA8Unorm;
 		case MTLPixelFormatRGBA8Unorm_sRGB:
-            return TETextureFormatSRGBA8Unorm;
+			return TETextureFormatSRGBA8Unorm;
 		case MTLPixelFormatBGRA8Unorm_sRGB:
 			return TETextureFormatSBGRA8Unorm;
 		case MTLPixelFormatRGBA16Unorm:
@@ -114,6 +114,24 @@
 			return TETextureFormatRGBA16F;
 		case MTLPixelFormatRGBA32Float:
 			return TETextureFormatRGBA32F;
+		case MTLPixelFormatBC1_RGBA:
+			return TETextureFormatBC1RGBAUnorm;
+		case MTLPixelFormatBC2_RGBA:
+			return TETextureFormatBC2Unorm;
+		case MTLPixelFormatBC3_RGBA:
+			return TETextureFormatBC3Unorm;
+		case MTLPixelFormatBC4_RUnorm:
+			return TETextureFormatBC4Unorm;
+		case MTLPixelFormatBC5_RGUnorm:
+			return TETextureFormatBC5Unorm;
+		case MTLPixelFormatBC6H_RGBFloat:
+			return TETextureFormatBC6SF;
+		case MTLPixelFormatBC6H_RGBUfloat:
+			return TETextureFormatBC6UF;
+		case MTLPixelFormatBC7_RGBAUnorm:
+			return TETextureFormatBC7Unorm;
+		case MTLPixelFormatBC7_RGBAUnorm_sRGB:
+			return TETextureFormatBC7SRGBUnorm;
 		default:
 			return TETextureFormatInvalid;
 	}
@@ -141,25 +159,44 @@
 			return MTLPixelFormatRG32Float;
 		case TETextureFormatRGB10_A2Unorm:
 			return MTLPixelFormatRGB10A2Unorm;
-        case TETextureFormatBGR10_A2Unorm:
-            return MTLPixelFormatBGR10A2Unorm;
-        case TETextureFormatRG11B10F:
-            return MTLPixelFormatRG11B10Float;
+		case TETextureFormatBGR10_A2Unorm:
+			return MTLPixelFormatBGR10A2Unorm;
+		case TETextureFormatRG11B10F:
+			return MTLPixelFormatRG11B10Float;
 		case TETextureFormatRGBA8Unorm:
-            return MTLPixelFormatRGBA8Unorm;
-        case TETextureFormatBGRA8Unorm:
-            return MTLPixelFormatBGRA8Unorm;
+			return MTLPixelFormatRGBA8Unorm;
+		case TETextureFormatBGRA8Unorm:
+			return MTLPixelFormatBGRA8Unorm;
 		case TETextureFormatSRGBA8Unorm:
-            return MTLPixelFormatRGBA8Unorm_sRGB;
-        case TETextureFormatSBGRA8Unorm:
-            return MTLPixelFormatBGRA8Unorm_sRGB;
+			return MTLPixelFormatRGBA8Unorm_sRGB;
+		case TETextureFormatSBGRA8Unorm:
+			return MTLPixelFormatBGRA8Unorm_sRGB;
 		case TETextureFormatRGBA16Unorm:
 			return MTLPixelFormatRGBA16Unorm;
 		case TETextureFormatRGBA16F:
 			return MTLPixelFormatRGBA16Float;
 		case TETextureFormatRGBA32F:
 			return MTLPixelFormatRGBA32Float;
-        case TETextureFormatInvalid:
+		case TETextureFormatBC1RGBUnorm:
+		case TETextureFormatBC1RGBAUnorm:
+			return MTLPixelFormatBC1_RGBA;
+		case TETextureFormatBC2Unorm:
+			return MTLPixelFormatBC2_RGBA;
+		case TETextureFormatBC3Unorm:
+			return MTLPixelFormatBC3_RGBA;
+		case TETextureFormatBC4Unorm:
+			return MTLPixelFormatBC4_RUnorm;
+		case TETextureFormatBC5Unorm:
+			return MTLPixelFormatBC5_RGUnorm;
+		case TETextureFormatBC6SF:
+			return MTLPixelFormatBC6H_RGBFloat;
+		case TETextureFormatBC6UF:
+			return MTLPixelFormatBC6H_RGBUfloat;
+		case TETextureFormatBC7Unorm:
+			return MTLPixelFormatBC7_RGBAUnorm;
+		case TETextureFormatBC7SRGBUnorm:
+			return MTLPixelFormatBC7_RGBAUnorm_sRGB;
+		case TETextureFormatInvalid:
 			break;
 	}
 	return MTLPixelFormatInvalid;
@@ -171,13 +208,13 @@
 	if (texture.isShareable)
 	{
 		engine.take(TEMetalTextureCreate(texture, TETextureOriginTopLeft,
-                                         [TCHTexture mapForMetalSwizzle:texture.swizzle],
-                                         nullptr, nullptr));
+										 [TCHTexture mapForMetalSwizzle:texture.swizzle],
+										 nullptr, nullptr));
 	}
 	else if (texture.iosurface)
 	{
 		TETextureFormat format = [TCHTexture formatForMetalPixelFormat:texture.pixelFormat];
-        TETextureComponentMap map = [TCHTexture mapForMetalSwizzle:texture.swizzle];
+		TETextureComponentMap map = [TCHTexture mapForMetalSwizzle:texture.swizzle];
 		if (format != TETextureFormatInvalid)
 		{
 			engine.take(TEIOSurfaceTextureCreate(texture.iosurface,
