@@ -283,3 +283,15 @@ If you need to use domains in UI, the two domains which users might expect to be
 |----------------------|----------|-------------|
 |TELinkDomainParameter |Parameter |par          |
 |TELinkDomainOperator  |Operator  |op           |
+
+
+Signing and the Hardened Runtime
+--------------------------------
+
+When using the macOS Hardened Runtime with TouchEngine.framework you will have to manually sign some components of the framework. Xcode's "Code Sign on Copy" option only signs the top-level library. The following correctly signs all the components of the framework to satisfy requirements for development, archiving and notarization (replace `<IDENTITY>` with your codesigning identity):
+
+	codesign --force -s <IDENTITY> -o runtime TouchEngine.framework/Versions/A/Frameworks/IPM.framework/Versions/A/ca.derivative.IPMAgent
+	codesign --force -s <IDENTITY> TouchEngine.framework/Versions/A/Frameworks/IPM.framework/Versions/A/IPM
+	codesign --force -s <IDENTITY> TouchEngine.framework/Versions/A/Frameworks/libTPC.dylib
+	codesign --force -s <IDENTITY> TouchEngine.framework/Versions/A/Frameworks/libTouchEngine.dylib
+	codesign --force -s <IDENTITY> TouchEngine.framework/Versions/A/TouchEngine
