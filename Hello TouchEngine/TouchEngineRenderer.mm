@@ -277,6 +277,15 @@ static void LinkCallback(TEInstance *instance, TELinkEvent event, const char *id
 
 - (void)configureCompleted:(NSError *)error
 {
+	if ([error.domain isEqualToString:TouchEngineRenderErrorDomain] && error.code == TEResultCancelled)
+	{
+		/*
+		 We ignore cancelled configurations - this happens because we call TEInstanceConfigure() at init
+		 with no path to let it do some preliminary setup, which may not have completed before we call it
+		 again with a path
+		 */
+		return;
+	}
     if (!error)
     {
         /*
