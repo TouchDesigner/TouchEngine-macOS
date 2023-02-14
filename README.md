@@ -11,7 +11,7 @@ TouchEngine requires an installed version of TouchDesigner to load and work with
 
 The earliest TouchDesigner version which works with this version of TouchEngine is 2020.28110. Generally, the most up-to-date release is recommended.
 
-Users can specify a particular version to use by including a file named "TouchEngine" alongside the component .tox being loaded. This file can be a renamed TouchDesigner application, or a file-system link to an application location (either a symbolic link or a macOS Finder alias).
+Users can specify a particular version to use by including a file named "TouchEngine" alongside the component .tox being loaded. This file can be a renamed TouchDesigner application, or a file-system link to an application location (either a symbolic link or a macOS Finder alias). Alternatively an environment variable TOUCHENGINE_APP_PATH can be set to the path to a TouchDesigner application.
 
 
 Example Project

@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		CxWGr0wSXTbwl2ukTwg472su5kI=
+		P99GKJ7jZUmwr2STA5mvPdRJEtw=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,17 +15,17 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UQGhsD0OUgJjuYQRekZYXZgl9GoQ4Rme7usGxjZpHq0=
+			MitBwODNjpigcsCWkNC54li+PGsiPV5Xt0MMgb9WNuo=
 			</data>
 		</dict>
 		<key>ca.derivative.IPMAgent</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			7i71vIkhesMNFXrTFWrri0VAUGc=
+			UJJw4aepF1nU5GI2swFIf0uB5yU=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"ee2ef5bc89217ac30d157ad3156aeb8b45405067" or cdhash H"c563c1b3ca03b1475877478390f955e9281a39e1"</string>
+			<string>identifier "ca.derivative" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Z7MPGSMXH2</string>
 		</dict>
 	</dict>
 	<key>rules</key>

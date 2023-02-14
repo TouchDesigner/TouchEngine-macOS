@@ -277,6 +277,14 @@ typedef TEObject TEGraphicsContext;
 typedef struct TETable_ TETable;
 typedef struct TEFloatBuffer_ TEFloatBuffer;
 
+struct TEColor
+{
+	double red;
+	double green;
+	double blue;
+	double alpha;
+};
+
 struct TELinkInfo
 {
 	/*
@@ -393,6 +401,47 @@ struct TEInstanceStatistics
 	 	of TouchDesigner being used
 	 */
 	int64_t	framesDropped;
+};
+
+struct TEError
+{
+	/*
+	 The domain for the error
+	 */
+	const char *		domain;
+
+	/*
+	 A code for the error, which is meaningful for the domain
+	 */
+	int32_t				code;
+
+	/*
+	 The severity of the error
+	 */
+	TESeverity			severity;
+
+	/*
+	 The human readable description for the error as a null-terminated UTF-8 encoded string
+	 */
+	const char *		description;
+
+	/*
+	 The location for the error, meaningful for the domain, as a null-terminated UTF-8 encoded string
+	 */
+	const char *		location;
+};
+
+struct TEErrorArray
+{
+	/*
+	 The number of errors in the array
+	 */
+	int32_t						count;
+
+	/*
+	 The array of errors
+	 */
+	const struct TEError *		errors;
 };
 
 /*
@@ -675,6 +724,12 @@ TE_EXPORT TEResult TEInstanceStartFrameAtTime(TEInstance *instance, int64_t time
 TE_EXPORT TEResult TEInstanceCancelFrame(TEInstance *instance);
 
 /*
+ On return 'errors' is a list of TEErrors for the currently loaded file at the current frame.
+ The caller is responsible for releasing the returned TEErrorArray using TERelease(). 
+ */
+TE_EXPORT TEResult TEInstanceGetErrors(TEInstance *instance, struct TEErrorArray * TE_NULLABLE * TE_NONNULL errors);
+
+/*
  Link Layout
  */
 
@@ -739,6 +794,18 @@ TE_EXPORT TEResult TEInstanceLinkGetChoiceLabels(TEInstance *instance, const cha
  The caller is responsible for releasing the returned TEStringArray using TERelease().
 */
 TE_EXPORT TEResult TEInstanceLinkGetChoiceValues(TEInstance *instance, const char *identifier, struct TEStringArray * TE_NULLABLE * TE_NONNULL values);
+
+/*
+ Returns true if a user-selected color tint is associated with a link. If no tint has been set by the user, or if no matching link exists, returns false.
+*/
+TE_EXPORT bool TEInstanceLinkHasUserTint(TEInstance *instance, const char *identifier);
+
+/*
+ If a user-selected color tint is associated with the link 'tint' is set.
+ 'tint' is a pointer to a TEColor which will be set to the color tint on return
+ If no color tint is set, returns TEResultNoMatchingEntity
+*/
+TE_EXPORT TEResult TEInstanceLinkGetUserTint(TEInstance *instance, const char *identifier, struct TEColor * TE_NONNULL tint);
 
 /*
  Notifies the instance of the caller's interest in a link
