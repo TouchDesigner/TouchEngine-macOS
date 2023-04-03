@@ -1,5 +1,10 @@
 # Changes
 
+## 2.4
+
+* Add TEInstanceSetAssetDirectory() and TEInstanceGetAssetDirectory()
+* Fix crash which could occur handling component errors during loading
+
 ## 2.3
 
 * Add TEInstanceLinkHasUserTint() and TEInstanceLinkGetUserTint()
