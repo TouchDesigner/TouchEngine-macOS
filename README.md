@@ -3,6 +3,10 @@ TouchEngine
 
 TouchEngine provides an API to load and render TouchDesigner components.
 
+SDK
+---
+
+This repository contains TouchEngine.framework which is the framework you will use in your own applications, as well as an example project. The SDK for Windows is available at https://github.com/TouchDesigner/TouchEngine-Windows.
 
 Instances And TouchDesigner Installations
 -----------------------------------------
@@ -27,7 +31,7 @@ The TouchEngine API is documented in the TouchEngine headers. This document give
 
 
 Using TouchEngine
------------------------------
+-----------------
 
 In Xcode, add TouchEngine.framework to the "Frameworks, Libraries, and Embedded Content" section for your target in the "General" tab for your application's target. Select "Embed and Sign" in the "Embed" menu. `#include <TouchEngine/TouchEngine.h>` in any source file you wish to use TouchEngine in. Note that to graphics-specific functions are not included in the umbrella header. For example to use Metal, add `#include <TouchEngine/TEMetal.h>` to your includes.
 
