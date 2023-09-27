@@ -180,10 +180,15 @@
 		case TETextureFormatBC1RGBUnorm:
 		case TETextureFormatBC1RGBAUnorm:
 			return MTLPixelFormatBC1_RGBA;
+		case TETextureFormatBC1SRGBUnorm:
+		case TETextureFormatBC1SRGBAUnorm:
+			return MTLPixelFormatBC1_RGBA_sRGB;
 		case TETextureFormatBC2Unorm:
 			return MTLPixelFormatBC2_RGBA;
 		case TETextureFormatBC3Unorm:
 			return MTLPixelFormatBC3_RGBA;
+		case TETextureFormatBC3SRGBUnorm:
+			return MTLPixelFormatBC3_RGBA_sRGB;
 		case TETextureFormatBC4Unorm:
 			return MTLPixelFormatBC4_RUnorm;
 		case TETextureFormatBC5Unorm:
