@@ -57,7 +57,7 @@ static void EventCallback(TEInstance *instance,
             [renderer configureCompleted:error];
             break;
         case TEEventInstanceDidLoad:
-            [renderer.delegate engineLoadDidComplete:error];
+			[renderer loadCompleted:error];
             break;
         case TEEventInstanceDidUnload:
             break;
@@ -269,10 +269,7 @@ static void LinkCallback(TEInstance *instance, TELinkEvent event, const char *id
 
 - (void)loadCompleted:(NSError *)error
 {
-    if (error)
-    {
-        [self.delegate engineError:error];
-    }
+	[self.delegate engineLoadDidComplete:error];
 }
 
 - (void)configureCompleted:(NSError *)error
