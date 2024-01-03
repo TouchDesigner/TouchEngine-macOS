@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>22G91</string>
+	<string>23C71</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -41,6 +41,6 @@
 	<key>DTXcodeBuild</key>
 	<string>14E300c</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.14</string>
+	<string>10.15</string>
 </dict>
 </plist>

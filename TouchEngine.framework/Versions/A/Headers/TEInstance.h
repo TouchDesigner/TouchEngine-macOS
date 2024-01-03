@@ -127,7 +127,7 @@ typedef TE_ENUM(TEScope, int32_t)
 typedef TE_ENUM(TELinkType, int32_t) 
 {
 	/*
-	 Multiple linked collected according to user preference
+	 Multiple links collected according to user preference
 	 */
 	TELinkTypeGroup,
 
@@ -135,6 +135,11 @@ typedef TE_ENUM(TELinkType, int32_t)
 	 Multiple links which collectively form a single complex link
 	 */
 	TELinkTypeComplex,
+
+	/*
+	 Multiple repetitions of a group of links
+	 */
+	TELinkTypeSequence,
 
 	/*
 	 bool
@@ -314,7 +319,7 @@ struct TELinkInfo
 	 For value links, the number of values associated with the link
 	 eg a colour may have four values for red, green, blue and alpha.
 
-	 For group or complex links, the number of children.
+	 For group, sequence or complex links, the number of children.
 	 */
 	int32_t			count;
 
@@ -760,14 +765,14 @@ TE_EXPORT TEResult TEInstanceGetErrors(TEInstance *instance, struct TEErrorArray
 /*
  On return 'children' is a list of link identifiers for the children of the parent link denoted by 'identifier'.
  If 'identifier' is NULL or an empty string, the top level links are returned.
- 'identifier' should denote a link of type TELinkTypeGroup or TELinkTypeComplex.
+ 'identifier' should denote a link of type TELinkTypeGroup, TELinkTypeSequence or TELinkTypeComplex.
  The caller is responsible for releasing the returned TEStringArray using TERelease().
  */
 TE_EXPORT TEResult TEInstanceLinkGetChildren(TEInstance *instance, const char * TE_NULLABLE identifier, struct TEStringArray * TE_NULLABLE * TE_NONNULL children);
 
 /*
- On return 'string' is the link identifier for the TELinkTypeGroup or TELinkTypeComplex which contains the
-	link denoted by 'identifier', or an empty string if 'identifier' denotes a top level link.
+ On return 'string' is the link identifier for the TELinkTypeGroup, TELinkTypeSequence or TELinkTypeComplex which
+	contains the link denoted by 'identifier', or an empty string if 'identifier' denotes a top level link.
  The caller is responsible for releasing the returned TEString using TERelease(). 
  */
 TE_EXPORT TEResult TEInstanceLinkGetParent(TEInstance *instance, const char * TE_NULLABLE identifier, struct TEString * TE_NULLABLE * TE_NONNULL string);
@@ -961,6 +966,16 @@ TE_EXPORT TEResult TEInstanceLinkSetTableValue(TEInstance *instance, const char 
  'value' may be retained by the instance
  */
 TE_EXPORT TEResult TEInstanceLinkSetObjectValue(TEInstance *instance, const char *identifier, TEObject * TE_NULLABLE object);
+
+/*
+ Sets the number of repetitions of a link of type TELinkTypeSequence.
+
+ The change may happen asynchronously, after this function returns. Updates will be posted as events to the
+ 	TEInstanceLinkCallback.
+ The current number of instances is queried from the 'count' member of TELinkInfo or the 'count' member of the
+ 	TEStringArray returned from TEInstanceLinkGetChildren() for the identifier for the sequence.
+ */
+TE_EXPORT TEResult TEInstanceLinkSetSequenceCount(TEInstance *instance, const char *identifier, int32_t count);
 
 #define kStructAlignmentError "struct misaligned for library"
 

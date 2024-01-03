@@ -1,5 +1,10 @@
 # Changes
 
+## 3.0
+
+* Add TELinkTypeSequence and TEInstanceLinkSetSequenceCount()
+	Sequences are repeating groups of parameters. The number of repetitions is user configurable.
+
 ## 2.7
 
 * Add TEInstanceLinkHasValue() and TELinkValueUIMinimum, TELinkValueUIMaximum
