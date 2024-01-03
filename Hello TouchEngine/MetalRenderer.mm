@@ -33,7 +33,7 @@
 	uint64_t _waitValue;
 	TCHSharedEvent *_waitEvent;
 	TCHSharedTexture *_outputTexture;
-    TCHTexturePool *_pool;
+	TCHTexturePool *_pool;
 }
 
 - (instancetype)initWithView:(MTKView *)mtkView
@@ -80,9 +80,9 @@
 			self = nil;
 			return self;
 		}
-        
-        _backgroundColor = [NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
-        _foregroundColor = [NSColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+		
+		_backgroundColor = [NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+		_foregroundColor = [NSColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
 	}
 	return self;
 }
@@ -134,9 +134,9 @@
 								   atIndex:TextureIndexBaseColor];
 		
 		[commandEncoder drawPrimitives:MTLPrimitiveTypeTriangle
-						  vertexStart:0
-						  vertexCount:_drawVertexCount];
-	
+						   vertexStart:0
+						   vertexCount:_drawVertexCount];
+		
 	}
 	[commandEncoder endEncoding];
 	
@@ -206,13 +206,13 @@
 	MTLTextureDescriptor *descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm
 																						  width:_viewportSize.x height:_viewportSize.y mipmapped:NO];
 	descriptor.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
-    
-    TCHTextureShareMode mode = self.useMetalSharedTextures ? TCHTextureShareModeMetalShareable : TCHTextureShareModeIOSurface;
-    
-    if (!_pool || _pool.descriptor.width != descriptor.width || _pool.descriptor.height != descriptor.height || _pool.shareMode != mode)
-    {
-        _pool = [[TCHTexturePool alloc] initForDevice:_device descriptor:descriptor shareMode:mode];
-    }
+	
+	TCHTextureShareMode mode = self.useMetalSharedTextures ? TCHTextureShareModeMetalShareable : TCHTextureShareModeIOSurface;
+	
+	if (!_pool || _pool.descriptor.width != descriptor.width || _pool.descriptor.height != descriptor.height || _pool.shareMode != mode)
+	{
+		_pool = [[TCHTexturePool alloc] initForDevice:_device descriptor:descriptor shareMode:mode];
+	}
 	
 	TCHTexture *texture = nil;
 	TCHSharedEvent *event = self.inputTexture.waitEvent;
@@ -229,7 +229,7 @@
 		event = [[TCHSharedEvent alloc] initWithSharedEvent:mtlEvent];
 	}
 	
-    texture = [_pool newTexture];
+	texture = [_pool newTexture];
 	
 	id<MTLCommandBuffer> setupCmdBuf = [_commandQueue commandBuffer];
 	MTLRenderPassDescriptor *renderPassDesc = [MTLRenderPassDescriptor renderPassDescriptor];
@@ -260,11 +260,11 @@
 		
 		const float point = ((0.8 - 0.6) * sin([NSDate timeIntervalSinceReferenceDate]) + 0.8 + 0.6) / 2.;
 		
-        const TextureFillFragmentArguments arguments = {{halfw, halfh},
-            point,
-            {static_cast<float>(self.backgroundColor.redComponent), static_cast<float>(self.foregroundColor.redComponent)},
-            {static_cast<float>(self.backgroundColor.greenComponent), static_cast<float>(self.foregroundColor.greenComponent)},
-            {static_cast<float>(self.backgroundColor.blueComponent), static_cast<float>(self.foregroundColor.blueComponent)}};
+		const TextureFillFragmentArguments arguments = {{halfw, halfh},
+			point,
+			{static_cast<float>(self.backgroundColor.redComponent), static_cast<float>(self.foregroundColor.redComponent)},
+			{static_cast<float>(self.backgroundColor.greenComponent), static_cast<float>(self.foregroundColor.greenComponent)},
+			{static_cast<float>(self.backgroundColor.blueComponent), static_cast<float>(self.foregroundColor.blueComponent)}};
 		
 		[encoder setVertexBytes:quadVertices
 						 length:sizeof(quadVertices)
@@ -277,7 +277,7 @@
 		[encoder setFragmentBytes:&arguments
 						   length:sizeof(arguments)
 						  atIndex:FragmentInputIndexArguments];
-				
+		
 		[encoder drawPrimitives:MTLPrimitiveTypeTriangle
 					vertexStart:0
 					vertexCount:6];
@@ -290,8 +290,8 @@
 	[setupCmdBuf commit];
 	
 	self.inputTexture = [[TCHSharedTexture alloc] initWithTexture:texture waitEvent:event waitValue:waitValue];
-    
-    [self.delegate inputTextureDidChange];
+	
+	[self.delegate inputTextureDidChange];
 }
 
 - (TCHSharedTexture *)setOutputTexture:(TCHSharedTexture *)output

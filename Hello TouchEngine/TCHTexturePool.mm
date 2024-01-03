@@ -43,36 +43,36 @@ static constexpr double kTCHTexturePoolExpireSeconds = 1.0;
 
 static void TextureCallback(id<MTLTexture> texture, TEObjectEvent event, void * TE_NULLABLE info)
 {
-    switch (event) {
-        case TEObjectEventBeginUse:
-        {
-            /*
-             There will be an objective-C reference to the TCHTexturePoolItem when this is invoked
-             but it may not last for as long as TouchEngine is using the texture, so retain it now
-             */
-            TCHTexturePoolItem *item = (__bridge TCHTexturePoolItem *)info;
-            CFBridgingRetain(item);
-            [item beginUser];
-            break;
-        }
-        case TEObjectEventEndUse:
-        {
-            /*
-             Balance our retain with a release at this point
-             -endUser will then return it to the pool if it isn't in use elsewhere
-             */
-            TCHTexturePoolItem *item = (TCHTexturePoolItem *)CFBridgingRelease(info);
-            [item endUser];
-            break;
-        }
-        default:
-            break;
-    }
+	switch (event) {
+		case TEObjectEventBeginUse:
+		{
+			/*
+			 There will be an objective-C reference to the TCHTexturePoolItem when this is invoked
+			 but it may not last for as long as TouchEngine is using the texture, so retain it now
+			 */
+			TCHTexturePoolItem *item = (__bridge TCHTexturePoolItem *)info;
+			CFBridgingRetain(item);
+			[item beginUser];
+			break;
+		}
+		case TEObjectEventEndUse:
+		{
+			/*
+			 Balance our retain with a release at this point
+			 -endUser will then return it to the pool if it isn't in use elsewhere
+			 */
+			TCHTexturePoolItem *item = (TCHTexturePoolItem *)CFBridgingRelease(info);
+			[item endUser];
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 static void SurfaceCallback(IOSurfaceRef surface, TEObjectEvent event, void * TE_NULLABLE info)
 {
-    return TextureCallback(nil, event, info);
+	return TextureCallback(nil, event, info);
 }
 
 // Utility for allocating IOSurfaces
@@ -403,7 +403,7 @@ static int blockHeightForPixelFormat(MTLPixelFormat format)
 static int blockWidthForPixelFormat(MTLPixelFormat format)
 {
 	switch (format) {
-		// Non-square block sizes:
+			// Non-square block sizes:
 		case MTLPixelFormatPVRTC_RGB_2BPP:
 		case MTLPixelFormatPVRTC_RGB_2BPP_sRGB:
 		case MTLPixelFormatPVRTC_RGBA_2BPP:
@@ -453,21 +453,21 @@ static int blockWidthForPixelFormat(MTLPixelFormat format)
 	self = [super initWithMTLTexture:item.texture forTETexture:item.engineTexture];
 	if (self)
 	{
-        [item beginUser];
-        _item = item;
+		[item beginUser];
+		_item = item;
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-    [self.item endUser];
+	[self.item endUser];
 }
 @end
 
 @implementation TCHTexturePool {
 	NSMutableSet<TCHTexturePoolItem *> *_items;
-    dispatch_source_t _timer;
+	dispatch_source_t _timer;
 }
 - (instancetype)initForDevice:(id<MTLDevice>)device descriptor:(MTLTextureDescriptor *)descriptor shareMode:(TCHTextureShareMode)mode
 {
@@ -487,165 +487,165 @@ static int blockWidthForPixelFormat(MTLPixelFormat format)
 		_descriptor = descriptor;
 		_shareMode = mode;
 		_items = [[NSMutableSet alloc] initWithCapacity:4];
-        if (kTCHTexturePoolExpireSeconds > 0.0)
-        {
-            _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0));
-            uint64_t interval = NSEC_PER_SEC * kTCHTexturePoolExpireSeconds;
-            dispatch_source_set_timer(_timer, DISPATCH_TIME_NOW, interval, interval);
-            
-            // Do not retain self in this block, or we will never be released
-            NSMutableSet<TCHTexturePoolItem *> *itemsForBlock = _items;
-            dispatch_source_set_event_handler(_timer, ^{
-                @autoreleasepool {
-                    uint64_t now = CVGetCurrentHostTime();
-                    double freq = CVGetHostClockFrequency();
-                    uint64_t expire = now - (freq * kTCHTexturePoolExpireSeconds);
-                    NSMutableSet *discard = [NSMutableSet set];
-                    @synchronized (itemsForBlock) {
-                        for (TCHTexturePoolItem *it : itemsForBlock)
-                        {
-                            if (it.lastUse < expire)
-                            {
-                                [discard addObject:it];
-                            }
-                        }
-                        [itemsForBlock minusSet:discard];
-                    }
-                    // Do any actual resource deletion outside the @synchronized section
-                    [discard removeAllObjects];
-                }
-            });
-            dispatch_resume(_timer);
-        }
+		if (kTCHTexturePoolExpireSeconds > 0.0)
+		{
+			_timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0));
+			uint64_t interval = NSEC_PER_SEC * kTCHTexturePoolExpireSeconds;
+			dispatch_source_set_timer(_timer, DISPATCH_TIME_NOW, interval, interval);
+			
+			// Do not retain self in this block, or we will never be released
+			NSMutableSet<TCHTexturePoolItem *> *itemsForBlock = _items;
+			dispatch_source_set_event_handler(_timer, ^{
+				@autoreleasepool {
+					uint64_t now = CVGetCurrentHostTime();
+					double freq = CVGetHostClockFrequency();
+					uint64_t expire = now - (freq * kTCHTexturePoolExpireSeconds);
+					NSMutableSet *discard = [NSMutableSet set];
+					@synchronized (itemsForBlock) {
+						for (TCHTexturePoolItem *it : itemsForBlock)
+						{
+							if (it.lastUse < expire)
+							{
+								[discard addObject:it];
+							}
+						}
+						[itemsForBlock minusSet:discard];
+					}
+					// Do any actual resource deletion outside the @synchronized section
+					[discard removeAllObjects];
+				}
+			});
+			dispatch_resume(_timer);
+		}
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-    dispatch_source_cancel(_timer);
+	dispatch_source_cancel(_timer);
 }
 
 - (TCHTexture *)newTexture
 {
-    TCHTexturePoolItem *item = nil;
+	TCHTexturePoolItem *item = nil;
 	@synchronized (_items) {
-        item = [_items anyObject];
+		item = [_items anyObject];
 		if (item)
 		{
-            [_items removeObject:item];
+			[_items removeObject:item];
 		}
 	}
-    
-    if (!item)
-    {
-        id<MTLTexture> mtl = nil;
-        if (self.shareMode == TCHTextureShareModeIOSurface)
-        {
-            int blockW = blockWidthForPixelFormat(self.descriptor.pixelFormat);
-            int blockH = blockHeightForPixelFormat(self.descriptor.pixelFormat);
-            size_t bpe = bytesPerElementForPixelFormat(self.descriptor.pixelFormat);
-            
-            if (blockW != 0 && blockH != 0 && bpe != 0)
-            {
-                NSDictionary<NSString *, id<NSObject>> *properties = @{
-                    (id)kIOSurfaceWidth: @(self.descriptor.width),
-                    (id)kIOSurfaceHeight: @(self.descriptor.height),
-                    (id)kIOSurfaceBytesPerElement: @(bpe),
-                    (id)kIOSurfaceElementWidth: @(blockW),
-                    (id)kIOSurfaceElementHeight: @(blockH),
-                };
-                
-                IOSurfaceRef surface = IOSurfaceCreate((CFDictionaryRef)properties);
-                
-                mtl = [_device newTextureWithDescriptor:self.descriptor iosurface:surface plane:0];
-                
-                item = [[TCHTexturePoolItem alloc] initWithTexture:mtl surface:surface pool:self];
-                
-                CFRelease(surface);
-            }
-        }
-        else
-        {
-            mtl = [self.device newSharedTextureWithDescriptor:self.descriptor];
-            item = [[TCHTexturePoolItem alloc] initWithTexture:mtl pool:self];
-        }
-    }
 	
-    if (item)
-    {
-        return [[TCHTexturePoolTexture alloc] initWithItem:item];
-    }
+	if (!item)
+	{
+		id<MTLTexture> mtl = nil;
+		if (self.shareMode == TCHTextureShareModeIOSurface)
+		{
+			int blockW = blockWidthForPixelFormat(self.descriptor.pixelFormat);
+			int blockH = blockHeightForPixelFormat(self.descriptor.pixelFormat);
+			size_t bpe = bytesPerElementForPixelFormat(self.descriptor.pixelFormat);
+			
+			if (blockW != 0 && blockH != 0 && bpe != 0)
+			{
+				NSDictionary<NSString *, id<NSObject>> *properties = @{
+					(id)kIOSurfaceWidth: @(self.descriptor.width),
+					(id)kIOSurfaceHeight: @(self.descriptor.height),
+					(id)kIOSurfaceBytesPerElement: @(bpe),
+					(id)kIOSurfaceElementWidth: @(blockW),
+					(id)kIOSurfaceElementHeight: @(blockH),
+				};
+				
+				IOSurfaceRef surface = IOSurfaceCreate((CFDictionaryRef)properties);
+				
+				mtl = [_device newTextureWithDescriptor:self.descriptor iosurface:surface plane:0];
+				
+				item = [[TCHTexturePoolItem alloc] initWithTexture:mtl surface:surface pool:self];
+				
+				CFRelease(surface);
+			}
+		}
+		else
+		{
+			mtl = [self.device newSharedTextureWithDescriptor:self.descriptor];
+			item = [[TCHTexturePoolItem alloc] initWithTexture:mtl pool:self];
+		}
+	}
+	
+	if (item)
+	{
+		return [[TCHTexturePoolTexture alloc] initWithItem:item];
+	}
 	return nil;
 }
 
 - (void)returnItem:(TCHTexturePoolItem *)item
 {
-    item.lastUse = CVGetCurrentHostTime();
+	item.lastUse = CVGetCurrentHostTime();
 	@synchronized (_items) {
-        [_items addObject:item];
+		[_items addObject:item];
 	}
 }
 
 @end
 
 @implementation TCHTexturePoolItem {
-    TouchObject<TETexture> _object;
-    int _users;
+	TouchObject<TETexture> _object;
+	int _users;
 }
 
 - (instancetype)initWithTexture:(id<MTLTexture>)mtl pool:(TCHTexturePool *)pool
 {
-    return [self initWithTexture:mtl surface:nil pool:pool];
+	return [self initWithTexture:mtl surface:nil pool:pool];
 }
 
 - (instancetype)initWithTexture:(id<MTLTexture>)mtl surface:(IOSurfaceRef)surface pool:(TCHTexturePool *)pool
 {
-    self = [super init];
-    if (self)
-    {
-        if (surface)
-        {
-            _object.take(TEIOSurfaceTextureCreate(surface,
-                                                  [TCHTexture formatForMetalPixelFormat:mtl.pixelFormat],
-                                                  0,
-                                                  TETextureOriginTopLeft,
-                                                  [TCHTexture mapForMetalSwizzle:mtl.swizzle],
-                                                  SurfaceCallback, (__bridge  void *)self));
-        }
-        else
-        {
-            _object.take(TEMetalTextureCreate(mtl,
-                                              TETextureOriginTopLeft,
-                                              [TCHTexture mapForMetalSwizzle:mtl.swizzle],
-                                              TextureCallback, (__bridge void *)self));
-        }
-        _texture = mtl;
-        _pool = pool;
-    }
-    return self;
+	self = [super init];
+	if (self)
+	{
+		if (surface)
+		{
+			_object.take(TEIOSurfaceTextureCreate(surface,
+												  [TCHTexture formatForMetalPixelFormat:mtl.pixelFormat],
+												  0,
+												  TETextureOriginTopLeft,
+												  [TCHTexture mapForMetalSwizzle:mtl.swizzle],
+												  SurfaceCallback, (__bridge  void *)self));
+		}
+		else
+		{
+			_object.take(TEMetalTextureCreate(mtl,
+											  TETextureOriginTopLeft,
+											  [TCHTexture mapForMetalSwizzle:mtl.swizzle],
+											  TextureCallback, (__bridge void *)self));
+		}
+		_texture = mtl;
+		_pool = pool;
+	}
+	return self;
 }
 
 - (TETexture *)engineTexture
 {
-    return _object.get();
+	return _object.get();
 }
 
 - (void)beginUser
 {
-    @synchronized (self) {
-        _users++;
-    }
+	@synchronized (self) {
+		_users++;
+	}
 }
 
 - (void)endUser
 {
-    @synchronized (self) {
-        if (--_users == 0)
-        {
-            [self.pool returnItem:self];
-        }
-    }
+	@synchronized (self) {
+		if (--_users == 0)
+		{
+			[self.pool returnItem:self];
+		}
+	}
 }
 
 @end

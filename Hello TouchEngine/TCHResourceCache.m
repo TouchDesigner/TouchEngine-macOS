@@ -103,8 +103,8 @@ static void MetalSharedEventCallback(MTLSharedEventHandle *handle, TEObjectEvent
 																									  width:IOSurfaceGetWidth(surface)
 																									 height:IOSurfaceGetHeight(surface)
 																								  mipmapped:NO];
-                descriptor.swizzle = [TCHTexture metalSwizzleForMap:map];
-                
+				descriptor.swizzle = [TCHTexture metalSwizzleForMap:map];
+				
 				tex = [self.device newTextureWithDescriptor:descriptor iosurface:surface plane:0];
 				if (tex)
 				{
@@ -163,7 +163,7 @@ static void MetalSharedEventCallback(MTLSharedEventHandle *handle, TEObjectEvent
 			}
 			if (event)
 			{
-                return [[TCHSharedEvent alloc] initWithMTLSharedEvent:event forTESemaphore:semaphore];
+				return [[TCHSharedEvent alloc] initWithMTLSharedEvent:event forTESemaphore:semaphore];
 			}
 		}
 	}
