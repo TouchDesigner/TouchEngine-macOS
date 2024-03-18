@@ -1,5 +1,12 @@
 # Changes
 
+## 3.1
+
+* Add TEInstanceSetPreferredEnginePath(), TEInstanceGetPreferredEnginePath() and TEInstanceGetConfiguredEnginePath()
+* Fix issue which prevented GPU selection working for Vulkan hosts in some circumstances
+* Fix issue which caused TEInstanceGetSupportedTextureTypes() to return bad values for some older TouchDesigner versions
+* When TouchDesigner 2023.11600 is in use on a user's system, output textures will always be IOSurface-backed to avoid a bug with Metal texture output in that version
+
 ## 3.0
 
 * Add TELinkTypeSequence and TEInstanceLinkSetSequenceCount()
