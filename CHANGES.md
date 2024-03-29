@@ -1,5 +1,10 @@
 # Changes
 
+## 3.2
+
+* Fix issue which could cause unexpected behaviour in OpenGL hosts after a texture output was resized
+* Fix issue which prevented users launching TouchDesigner while TouchEngine was in use on macOS (requires TouchDesigner 2023.11629 or later)
+
 ## 3.1
 
 * Add TEInstanceSetPreferredEnginePath(), TEInstanceGetPreferredEnginePath() and TEInstanceGetConfiguredEnginePath()
