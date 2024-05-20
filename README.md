@@ -11,11 +11,13 @@ This repository contains TouchEngine.framework which is the framework you will u
 Instances And TouchDesigner Installations
 -----------------------------------------
 
-TouchEngine requires an installed version of TouchDesigner to load and work with components, along with any paid license (TouchPlayer/TouchDesigner Pro/Commercial/Educational). TouchEngine will locate an installed version suitable for use on the user's system. 
+TouchEngine requires an installed version of TouchDesigner to load and work with components, along with any paid license (TouchPlayer/TouchDesigner Pro/Commercial/Educational). TouchEngine will locate an installed version suitable for use on the user's system. TouchEngine will return errors for missing or unlicensed installations, which you should communicate to the user.
 
 The earliest TouchDesigner version which works with this version of TouchEngine is 2020.28110. Generally, the most up-to-date release is recommended.
 
-Users can specify a particular version to use by including a file named "TouchEngine" alongside the component .tox being loaded. This file can be a renamed TouchDesigner application, or a file-system link to an application location (either a symbolic link or a macOS Finder alias). Alternatively an environment variable TOUCHENGINE_APP_PATH can be set to the path to a TouchDesigner application.
+By default the most recent version of TouchDesigner will be used. If necessary, you can select a particular installation with `TEInstanceSetPreferredEnginePath()`.
+
+Users can specify a particular version to use by including a folder named "TouchEngine" alongside the component .tox being loaded. This folder can be a renamed TouchDesigner installation directory, or a file-system link to an installation (either a symbolic link or a macOS Finder alias). Alternatively an environment variable `TOUCHENGINE_APP_PATH` can be set to the path to a TouchDesigner application. Either of these user-indicated selections will override the effects of `TEInstanceSetPreferredEnginePath()`.
 
 
 Example Project
