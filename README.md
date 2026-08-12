@@ -275,7 +275,7 @@ TEGeometry cannot be modified. A mutable variant, TEMutableGeometry, allows for 
 
 As with textures, the TEGraphicsContext associated with the instance affects the type of buffers emitted - for example, associating a TED3D12Context will result in geometry with memory using TED3DSharedBuffer for GPU buffers.
 
-[TEGeometry.h](TouchEngine.framework/Headers/TEGeometry.h) describes in detail attributes, their buffers and their layout. [TEBuffer.h](TouchEngine.framework/Headers/TEBuffer.h) and the graphics-API headers have functions for working with host and GPU memory.
+[TEGeometry.h](TouchEngine.framework/Versions/A/Headers/TEGeometry.h) describes in detail attributes, their buffers and their layout. [TEBuffer.h](TouchEngine.framework/Versions/A/Headers/TEBuffer.h) and the graphics-API headers have functions for working with host and GPU memory.
 
 The example app demonstrates the construction of a complete TEGeometry, in [Geometry.cpp](<Hello TouchEngine/Geometry.cpp>).
 
