@@ -19,5 +19,8 @@
 
 @interface ViewController : NSViewController <TouchEngineRenderDelegate, MetalRendererDelegate, NSAnimationDelegate>
 @property (nonatomic, weak) IBOutlet MTKView *MTKView;
+@property (strong) NSColor *foregroundColor;
+@property (strong) NSColor *backgroundColor;
+@property double progress;
 @end
 

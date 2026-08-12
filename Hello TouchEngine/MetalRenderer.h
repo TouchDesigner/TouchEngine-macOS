@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, weak) id<MetalRendererDelegate> delegate;
 @property (readwrite, strong) NSColor *backgroundColor;
 @property (readwrite, strong) NSColor *foregroundColor;
+@property (readwrite) double progress;
 @property (readonly) id<MTLDevice> device;
 @property (readonly, strong) TCHSharedTexture *inputTexture;
 /*

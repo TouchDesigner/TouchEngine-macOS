@@ -15,7 +15,7 @@
 #import "ViewController.h"
 #import <MetalKit/MetalKit.h>
 #import "TCHSharedTexture.h"
-#import "MetalRendererAnimation.h"
+#import "Animation.h"
 
 @interface ViewController ()
 @property (readwrite, strong) NSAnimation *animation;
@@ -33,6 +33,9 @@
 	
 	view.device = MTLCreateSystemDefaultDevice();
 	
+	_backgroundColor = [NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+	_foregroundColor = [NSColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+
 	_renderer = [[MetalRenderer alloc] initWithView:view];
 	
 	[_renderer mtkView:view drawableSizeWillChange:view.drawableSize];
@@ -44,6 +47,11 @@
 	
 	NSError *error = nil;
 	_engine = [[TouchEngineRenderer alloc] initForDevice:_renderer.device error:&error];
+	
+	[_renderer bind:@"foregroundColor" toObject:self withKeyPath:@"foregroundColor" options:nil];
+	[_renderer bind:@"backgroundColor" toObject:self withKeyPath:@"backgroundColor" options:nil];
+	[_renderer bind:@"progress" toObject:self withKeyPath:@"progress" options:nil];
+	[_engine bind:@"progress" toObject:self withKeyPath:@"progress" options:nil];
 	
 	if (_engine)
 	{
@@ -81,10 +89,10 @@
 	}
 }
 
-- (void)setBackground:(NSColor *)bg foreground:(NSColor *)fg
+- (void)setBackground:(NSColor *)bg foreground:(NSColor *)fg progress:(float)pr
 {
 	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-		self.animation = [[MetalRendererAnimation alloc] initForRenderer:self->_renderer background:bg foreground:fg];
+		self.animation = [[Animation alloc] initForController:self background:bg foreground:fg progress:pr];
 		self.animation.delegate = self;
 		[self.animation startAnimation];
 	}];
@@ -105,7 +113,8 @@
 	else
 	{
 		[self setBackground:[NSColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:1.0]
-				 foreground:[NSColor colorWithRed:1.0 green:0.8 blue:0.8 alpha:1.0]];
+				 foreground:[NSColor colorWithRed:0.96 green:0.93 blue:0.66 alpha:1.0]
+				   progress:1.0];
 	}
 }
 
@@ -122,7 +131,7 @@
 	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 		[self presentError:error modalForWindow:self.view.window delegate:nil didPresentSelector:nil contextInfo:nil];
 	}];
-	[self setBackground:[NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0] foreground:[NSColor colorWithRed:0.8 green:0.4 blue:0.4 alpha:1.0]];
+	[self setBackground:[NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0] foreground:[NSColor colorWithRed:0.8 green:0.4 blue:0.4 alpha:1.0] progress:0.0];
 }
 
 - (TCHSharedTexture *)engineOutputDidChange:(TCHSharedTexture *)texture

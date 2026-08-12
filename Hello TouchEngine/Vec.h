@@ -12,17 +12,23 @@
 * prior written permission from Derivative.
 */
 
+#pragma once
+#include <cmath>
 
-#include <TouchEngine/TEBase.h>
-#include <TouchEngine/TEResult.h>
-#include <TouchEngine/TEObject.h>
-#include <TouchEngine/TEInstance.h>
-#include <TouchEngine/TEAllocation.h>
-#include <TouchEngine/TETexture.h>
-#include <TouchEngine/TEGraphicsContext.h>
-#include <TouchEngine/TEAdapter.h>
-#include <TouchEngine/TEFloatBuffer.h>
-#include <TouchEngine/TETable.h>
-#include <TouchEngine/TEGeometry.h>
-#include <TouchEngine/TEBuffer.h>
-#include <TouchEngine/TouchObject.h>
+template <size_t N>
+struct Vec {
+	float values[N];
+
+	float distance(const Vec<N>& other) const {
+		float sum = 0.0f;
+		for (int i = 0; i < N; ++i) {
+			float diff = values[i] - other.values[i];
+			sum += diff * diff;
+		}
+		return std::sqrt(sum);
+	}
+};
+
+using Vec2 = Vec<2>;
+using Vec3 = Vec<3>;
+using Vec4 = Vec<4>;

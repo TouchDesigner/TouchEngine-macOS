@@ -224,6 +224,7 @@ static size_t bytesPerElementForPixelFormat(MTLPixelFormat format)
 			return 16;
 		case MTLPixelFormatGBGR422:
 		case MTLPixelFormatBGRG422:
+		case MTLPixelFormatUnspecialized:
 			return 4;
 		case MTLPixelFormatDepth16Unorm:
 			return 2;
@@ -392,6 +393,7 @@ static int blockHeightForPixelFormat(MTLPixelFormat format)
 		case MTLPixelFormatX24_Stencil8:
 		case MTLPixelFormatDepth32Float_Stencil8:
 		case MTLPixelFormatX32_Stencil8:
+		case MTLPixelFormatUnspecialized:
 			return 1;
 		case MTLPixelFormatInvalid:
 			break;
@@ -439,6 +441,7 @@ static int blockWidthForPixelFormat(MTLPixelFormat format)
 			return 12;
 		case MTLPixelFormatGBGR422:
 		case MTLPixelFormatBGRG422:
+		case MTLPixelFormatUnspecialized:
 			return 2;
 		default:
 			// Square block sizes:

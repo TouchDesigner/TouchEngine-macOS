@@ -1,5 +1,16 @@
 # Changes
 
+## 4.0
+
+ * The following function has **CHANGED** its parameters and your code **MUST** be updated:
+ 	- TEInstanceConfigure() - takes a TEUIMode
+ * Adds support for geometry data as input and output for POP operators (see TEPoints.h)
+ * TouchEngine can optionally be configured to allow user components to open windows
+ * Python functions on user components can be called and results returned to the host
+ * Adds TEInstanceLinkGetStateForValue() for parameters with multiple values
+ * Adds TEInstanceLinkGetIdentifier() to find links by domain and name
+ * Some functions have been renamed and the old versions marked deprecated
+
 ## 3.3
 
 * Add TEInstanceLinkGetChoices(), deprecate TEInstanceLinkHasChoices(), TEInstanceLinkGetChoiceLabels(), TEInstanceLinkGetChoiceValues()

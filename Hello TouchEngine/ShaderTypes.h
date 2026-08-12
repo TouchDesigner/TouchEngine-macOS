@@ -29,6 +29,7 @@ typedef struct
     vector_float2 red;
     vector_float2 green;
     vector_float2 blue;
+	vector_float2 alpha;
 } TextureFillFragmentArguments;
 
 typedef struct

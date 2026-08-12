@@ -3,10 +3,19 @@ TouchEngine
 
 TouchEngine provides an API to load and render TouchDesigner components.
 
+> [!IMPORTANT]
+> This is an experimental branch to preview new features and provide you with a chance to give feedback. For production use, the tagged releases on `main` are recommended.
+
 SDK
 ---
 
 This repository contains TouchEngine.framework which is the framework you will use in your own applications, as well as an example project. The SDK for Windows is available at https://github.com/TouchDesigner/TouchEngine-Windows.
+
+Changes
+-------
+
+Changes to the SDK are documented in [CHANGES.md](CHANGES.md), please consult this when updating from an earlier release.
+
 
 Instances And TouchDesigner Installations
 -----------------------------------------
@@ -35,7 +44,7 @@ The TouchEngine API is documented in the TouchEngine headers. This document give
 Using TouchEngine
 -----------------
 
-In Xcode, add TouchEngine.framework to the "Frameworks, Libraries, and Embedded Content" section for your target in the "General" tab for your application's target. Select "Embed and Sign" in the "Embed" menu. `#include <TouchEngine/TouchEngine.h>` in any source file you wish to use TouchEngine in. Note that to graphics-specific functions are not included in the umbrella header. For example to use Metal, add `#include <TouchEngine/TEMetal.h>` to your includes.
+In Xcode, add TouchEngine.framework to the "Frameworks, Libraries, and Embedded Content" section for your target in the "General" tab for your application's target. Select "Embed and Sign" in the "Embed" menu. `#include <TouchEngine/TouchEngine.h>` in any source file you wish to use TouchEngine in. Note that graphics-specific functions are not included in the umbrella header. For example to use Metal, add `#include <TouchEngine/TEMetal.h>` to your includes.
 
 
 TEObjects
@@ -43,17 +52,17 @@ TEObjects
 
 Objects created or returned from the TouchEngine API are reference-counted, and you take ownership of objects returned to you from the API. If you use an API function with "Create" or "Get" in its name which returns a TEObject (including via a function argument), you must use `TERelease()` when you are finished with the object.
 
-    TELinkInfo *info;
-    TEResult result = TEInstanceLinkGetInfo(instance, identifier, &info);
-    if (result == TEResultSuccess)
-    {
-        // You become the owner of the TELinkInfo object
-        // use the object...
-        // ...
-        // ...and then release it
-        TERelease(&info);
-        // (info is set to NULL by TERelease()) 
-    }
+	TELinkInfo *info;
+	TEResult result = TEInstanceLinkGetInfo(instance, identifier, &info);
+	if (result == TEResultSuccess)
+	{
+		// You become the owner of the TELinkInfo object
+		// use the object...
+		// ...
+		// ...and then release it
+		TERelease(&info);
+		// (info is set to NULL by TERelease()) 
+	}
 
 You can use `TERetain()` to increase the reference-count of an object.
 
@@ -73,66 +82,66 @@ Creating and Configuring Instances
 
 An instance requires two callbacks: one for instance events, and one to receive link events:
 
-    void eventCallback(TEInstance * instance, TEEvent event, TEResult result, int64_t start_time_value, int32_t start_time_scale, int64_t end_time_value, int32_t end_time_scale, void * info)
-    {
-        // handle the event
-    }
-    
-    void linkCallback(TEInstance * instance, TELinkEvent event, const char *identifier, void * info)
-    {
-        // handle the link event
-    }
+	void eventCallback(TEInstance * instance, TEEvent event, TEResult result, int64_t start_time_value, int32_t start_time_scale, int64_t end_time_value, int32_t end_time_scale, void * info)
+	{
+		// handle the event
+	}
+	
+	void linkCallback(TEInstance * instance, TELinkEvent event, const char *identifier, void * info)
+	{
+		// handle the link event
+	}
 
 A single instance can be re-used to load several components. Only one component can be loaded in an instance at a time (but any number of instances can co-exist). Improve performance by re-configuring an existing instance rather than creating a new one where possible.
 
 Create an instance:
 
-    TEInstance *instance;
-    TEResult result = TEInstanceCreate(eventCallback, linkCallback, NULL, &instance);
-    if (result == TEResultSuccess)
-    {
-        // Continue to use the instance
-    }
+	TEInstance *instance;
+	TEResult result = TEInstanceCreate(eventCallback, linkCallback, NULL, &instance);
+	if (result == TEResultSuccess)
+	{
+		// Continue to use the instance
+	}
 
 If working with textures, create and associate a TEGraphicsContext suitable for your needs. A graphics context directs TouchEngine to use a specific graphics device, and provides functionality to work with textures using your chosen graphics API. Alternatively you can create and associate a TEAdapter to indicate a device without the full functionality of a graphics context. If neither are associated, the instance will select a device as it sees fit.
 
-    // See TEGraphicsContext.h to create a suitable context
-    if (result == TEResultSuccess)
-    {
-        result = TEInstanceAssociateGraphicsContext(instance, context);
-    }
+	// See TEGraphicsContext.h to create a suitable context
+	if (result == TEResultSuccess)
+	{
+		result = TEInstanceAssociateGraphicsContext(instance, context);
+	}
 
 You may wish to set a frame-rate to match your intended render rate:
 
-    if (result == TEResultSuccess)
-    {
-        // for example, this would set 30 FPS
-        result = TEInstanceSetFrameRate(instance, 30, 1);
-    }
+	if (result == TEResultSuccess)
+	{
+		// for example, this would set 30 FPS
+		result = TEInstanceSetFrameRate(instance, 30, 1);
+	}
 
 Configure and load a component:
 
-    if (result == TEResultSuccess)
-    {
-        result = TEInstanceConfigure(instance, "sample.tox", TETimeExternal);
-    }
-    if (result == TEResultSuccess)
-    {
-        result = TEInstanceLoad(instance);
-    }
+	if (result == TEResultSuccess)
+	{
+		result = TEInstanceConfigure(instance, "sample.tox", TETimeExternal, TEUINone);
+	}
+	if (result == TEResultSuccess)
+	{
+		result = TEInstanceLoad(instance);
+	}
 
 Loading begins immediately.
 
-During loading you will receive link callbacks with the event TELinkEventAdded for any links on the instance.
+During loading you will receive link callbacks with the event `TELinkEventAdded` for any links on the instance.
 
 Once loading has completed you will receive an event callback with the event `TEEventInstanceDidLoad`, and a TEResult indicating success or any warning or error.
 
 An instance is loaded suspended. Once configured, resuming the instance will permit rendering (and start playback in TETimeInternal mode):
 
-    if (result == TEResultSuccess)
-    {
-        result = TEInstanceResume(instance);
-    }
+	if (result == TEResultSuccess)
+	{
+		result = TEInstanceResume(instance);
+	}
 
 Note that if you are able to call `TEInstanceConfigure()` with a NULL path sometime before loading a component, the instance will perform some pre-loading setup. You can then call `TEInstanceConfigure()` again with a valid path, and the subsequent `TEInstanceLoad()` will complete much faster.
 
@@ -178,16 +187,16 @@ Menus
 
 TELinkTypeInt and TELinkTypeString can have a list of choices associated with them, suitable for presentation to the user as a menu.
 
-    TEStringArray *labels = NULL;
-    TEStringArray *values = NULL;
-    TEResult result = TEInstanceLinkGetChoices(instance, identifier, &labels, &values);
-    if (result == TEResultSuccess && labels)
-    {
-        // the link has choices
-        // ...
-        TERelease(&labels);
-        TERelease(&values);
-    }
+	TEStringArray *labels = NULL;
+	TEStringArray *values = NULL;
+	TEResult result = TEInstanceLinkGetChoices(instance, identifier, &labels, &values);
+	if (result == TEResultSuccess && labels)
+	{
+		// the link has choices
+		// ...
+		TERelease(&labels);
+		TERelease(&values);
+	}
 
 For TELinkTypeInt, the associated value for a menu item is its index. For TELinkTypeString, `TEInstanceLinkGetChoices()` returns a list of values, ordered to match the labels. Note that this list should not be considered exhaustive and users should be allowed to enter their own values as well as those in this list.
 
@@ -199,19 +208,19 @@ The TEGraphicsContext associated with an instance affects the behaviour of input
 
 One-time setup (Metal):
 
-    TEMetalContext *context;
-    TEResult result = TEMetalContextCreate(device, &context);
+	TEMetalContext *context;
+	TEResult result = TEMetalContextCreate(device, &context);
 
 One-time association (all graphics APIs):
 
-    if (result == TEResultSuccess)
-    {
-    	result = TEInstanceAssociateGraphicsContext(instance, context);
-    }
-    if (result != TEResultSuccess)
-    {
-        // deal with the error
-    }
+	if (result == TEResultSuccess)
+	{
+		result = TEInstanceAssociateGraphicsContext(instance, context);
+	}
+	if (result != TEResultSuccess)
+	{
+		// deal with the error
+	}
 
 An instance will accept inputs and emit outputs of a TETextureType which is shareable and appropriate for the associated graphics context.
 
@@ -225,44 +234,68 @@ If you are instantiating output textures directly from a shareable type (TEMetal
 
 Setting an input (Metal):
 
-    // Here we set a short-lived texture, but see above for guidance around texture re-use
-    TEMetalTexture *texture = TEMetalTextureCreate(tex, TETextureOriginTopLeft, kTETextureComponentMapIdentity, NULL, NULL);
-    TEResult result = TEInstanceLinkSetTextureValue(instance, identifier, texture, context);
-    // Release the texture - the instance will have retained it if necessary
-    TERelease(&texture);
+	// Here we set a short-lived texture, but see above for guidance around texture re-use
+	TEMetalTexture *texture = TEMetalTextureCreate(tex, TETextureOriginTopLeft, kTETextureComponentMapIdentity, NULL, NULL);
+	TEResult result = TEInstanceLinkSetTextureValue(instance, identifier, texture, context);
+	// Release the texture - the instance will have retained it if necessary
+	TERelease(&texture);
 
 Getting an output (Metal):
 
-    TETexture *value;
-    TEResult result = TEInstanceLinkGetTextureValue(instance, identifier, TELinkValueCurrent, &value);
-    if (result == TEResultSuccess && value != NULL)
-    {
-        if (TETextureGetType(value) == TETextureTypeMetal)
-        {
-            TEMetalTexture *texture = (TEMetalTexture *)value;
-            // Use the instantiated texture here
-            // ...
-        }
-    }
-    TERelease(&value);
+	TETexture *value;
+	TEResult result = TEInstanceLinkGetTextureValue(instance, identifier, TELinkValueCurrent, &value);
+	if (result == TEResultSuccess && value != NULL)
+	{
+		if (TETextureGetType(value) == TETextureTypeMetal)
+		{
+			TEMetalTexture *texture = (TEMetalTexture *)value;
+			// Use the instantiated texture here
+			// ...
+		}
+	}
+	TERelease(&value);
+
+
+Working with TELinkTypeGeometry
+-------------------------------
+
+TELinkTypeGeometry allows the exchange of geometry data with TouchEngine. In TouchDesigner terms, these are POP inputs and outputs.
+
+TEGeometry is a combination of any number of attributes, described by TEGeometryAttributeInfo and with attribute data in TEBuffers, along with data to describe primitive topology.
+
+*Points* are the collection of attributes which may be referenced by one or more *vertices*, and vertices in turn are collected to form *primitives*. An attribute can apply to points, vertices or primitives.
+
+The TEBuffers which store points, indices and some associated data may reside in memory on the host or the GPU, or a mixture of both.
+
+Although some attributes are common, such as 'P' for point data, there is no requirement that any TEGeometry have any particular attributes at all. Any numeric data may be represented.
+
+Information about maximums is also provided, which is used to provide bounds to configure GPU processing in TouchEngine where the actual number of points, vertices or primitives may not be known outside of GPU memory.
+
+TEGeometry cannot be modified. A mutable variant, TEMutableGeometry, allows for the construction of inputs.
+
+As with textures, the TEGraphicsContext associated with the instance affects the type of buffers emitted - for example, associating a TED3D12Context will result in geometry with memory using TED3DSharedBuffer for GPU buffers.
+
+[TEGeometry.h](TouchEngine.framework/Headers/TEGeometry.h) describes in detail attributes, their buffers and their layout. [TEBuffer.h](TouchEngine.framework/Headers/TEBuffer.h) and the graphics-API headers have functions for working with host and GPU memory.
+
+The example app demonstrates the construction of a complete TEGeometry, in [Geometry.cpp](<Hello TouchEngine/Geometry.cpp>).
 
 
 GPU Synchronization
 -------------------
 
-Usage of texture inputs and outputs must be synchronized between the host and TouchEngine. TouchEngine describes this operation as a texture transfer. The exact process depends on the graphics API in use - as determined by the TEGraphicsContext associated with the instance.
+Usage of texture and buffer inputs and outputs must be synchronized between the host and TouchEngine. TouchEngine describes this operation as a resource transfer. The exact process depends on the graphics API in use - as determined by the TEGraphicsContext associated with the instance.
 
 #### OpenGL
 
-There are no texture transfer operations at the host level if you operate only with TEOpenGLTextures, but you must bracket GPU usage of output textures with calls to `TEOpenGLTextureLock()` and `TEOpenGLTextureUnlock()`.
+There are no resource transfer operations at the host level if you operate only with TEOpenGLTextures, but you must bracket GPU usage of output textures with calls to `TEOpenGLTextureLock()` and `TEOpenGLTextureUnlock()`.
 
 #### Metal
 
-Texture transfers are required for inputs and outputs, which are either TEIOSurfaceTextures or TEMetalTextures. The transfer is done with a Metal shared event (as a TEMetalSemaphore).
+Resource transfers are required for inputs and outputs for texture and buffer types. The transfer is done with a Metal shared event (as a TEMetalSemaphore).
 
-When transferring a texture *to* TouchEngine, schedule a signal for the event with a known value, then pass the event and value to `TEInstanceAddTextureTransfer()`. TouchEngine will schedule a wait for the provided value before utilising the texture.
+When transferring a texture or buffer *to* TouchEngine, schedule a signal for the event with a known value, then pass the event and value to `TEInstanceAddResourceTransfer()`. TouchEngine will schedule a wait for the provided value before using the resource.
 
-When transferring a texture *from* TouchEngine, `TEInstanceGetTextureTransfer()` will return an event and wait-value. Schedule a wait for the returned value before utilising the texture.
+When transferring a texture or buffer *from* TouchEngine, `TEInstanceGetResourceTransfer()` will return an event and wait-value. Schedule a wait for the returned value before using the resource.
 
 #### Vulkan
 
@@ -272,10 +305,10 @@ Texture transfers are required for inputs and outputs, which are either TEIOSurf
 
 When transferring textures the contents of which should be kept (ie transferring inputs to TouchEngine, and outputs from TouchEngine), a Vulkan memory barrier is required. For inputs, perform the barrier to the image layout returned from `TEInstanceGetVulkanReleaseImageLayout()` and then provide the old and new layouts to `TEInstanceAddVulkanTextureTransfer()`. You can change the image layout the instance transfers textures to by calling `TEInstanceSetVulkanAcquireImageLayout()` once. This will determine the new layout you receive from `TEInstanceGetVulkanTextureTransfer()`.
 
-When transferring textures the contents of which can be discarded, use a regular texture transfer with `TEInstanceAddTextureTransfer()` or `TEInstanceGetTextureTransfer()`.
+When transferring buffers, and when transferring textures the contents of which can be discarded, use a regular resource transfer with `TEInstanceAddResourceTransfer()` or `TEInstanceGetResourceTransfer()`.
 
-When transferring a texture *to* TouchEngine, schedule a signal for the semaphore with a known value, then pass the semaphore and value to `TEInstanceAddVulkanTextureTransfer()` or `TEInstanceAddTextureTransfer()`. TouchEngine will schedule a wait for the provided value before utilising the texture.
-When transferring a texture *from* TouchEngine, `TEInstanceGetTextureTransfer()` or `TEInstanceGetVulkanTextureTransfer()` will return a semaphore and wait-value. Schedule a wait for the returned value before utilising the texture.
+When transferring a resource *to* TouchEngine, schedule a signal for the semaphore with a known value, then pass the semaphore and value to `TEInstanceAddVulkanTextureTransfer()` or `TEInstanceAddResourceTransfer()`. TouchEngine will schedule a wait for the provided value before using the resource.
+When transferring a resource *from* TouchEngine, `TEInstanceGetResourceTransfer()` or `TEInstanceGetVulkanTextureTransfer()` will return a semaphore and wait-value. Schedule a wait for the returned value before using the resource.
 
 
 Allowing users to reference known TouchDesigner objects

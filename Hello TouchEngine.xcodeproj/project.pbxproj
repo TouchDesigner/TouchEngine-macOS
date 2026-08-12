@@ -17,8 +17,9 @@
 		558D6CEF2811AF9D0036F5AB /* TouchEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 558D6CEE2811AF9D0036F5AB /* TouchEngine.framework */; };
 		558D6CF02811AF9D0036F5AB /* TouchEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 558D6CEE2811AF9D0036F5AB /* TouchEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		558D6CF9281BD9030036F5AB /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 558D6CF8281BD9030036F5AB /* UniformTypeIdentifiers.framework */; };
+		559D68D63007E2D400BB3D5B /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 559D68D53007E2D400BB3D5B /* Geometry.cpp */; };
 		55B591E6288EFBCB00E4E73F /* TCHTexturePool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55B591E5288EFBCB00E4E73F /* TCHTexturePool.mm */; };
-		55D4BD542937DFDC00F71BBC /* MetalRendererAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D4BD532937DFDC00F71BBC /* MetalRendererAnimation.m */; };
+		55D4BD542937DFDC00F71BBC /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D4BD532937DFDC00F71BBC /* Animation.m */; };
 		55E526A72875B8B20043868A /* MetalRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55E526A62875B8B20043868A /* MetalRenderer.mm */; };
 		55E526AC287849CE0043868A /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 55E526AB287849CE0043868A /* Shaders.metal */; };
 		55E526AE28784FEE0043868A /* displace.tox in Resources */ = {isa = PBXBuildFile; fileRef = 55E526AD28784FD90043868A /* displace.tox */; };
@@ -59,10 +60,14 @@
 		558D6CEE2811AF9D0036F5AB /* TouchEngine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TouchEngine.framework; sourceTree = "<group>"; };
 		558D6CF8281BD9030036F5AB /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		558D6CFA281BD96C0036F5AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		559D68D43007E2D400BB3D5B /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		559D68D53007E2D400BB3D5B /* Geometry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Geometry.cpp; sourceTree = "<group>"; };
 		55B591E4288EFBCB00E4E73F /* TCHTexturePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCHTexturePool.h; sourceTree = "<group>"; };
 		55B591E5288EFBCB00E4E73F /* TCHTexturePool.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TCHTexturePool.mm; sourceTree = "<group>"; };
-		55D4BD522937DFDC00F71BBC /* MetalRendererAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalRendererAnimation.h; sourceTree = "<group>"; };
-		55D4BD532937DFDC00F71BBC /* MetalRendererAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetalRendererAnimation.m; sourceTree = "<group>"; };
+		55C19A42302C93B200EEC9A5 /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		55C19A43302C93B200EEC9A5 /* Vec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
+		55D4BD522937DFDC00F71BBC /* Animation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
+		55D4BD532937DFDC00F71BBC /* Animation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Animation.m; sourceTree = "<group>"; };
 		55E526A52875B8B20043868A /* MetalRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalRenderer.h; sourceTree = "<group>"; };
 		55E526A62875B8B20043868A /* MetalRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalRenderer.mm; sourceTree = "<group>"; };
 		55E526AA2878496D0043868A /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
@@ -136,8 +141,12 @@
 				55B591E4288EFBCB00E4E73F /* TCHTexturePool.h */,
 				55B591E5288EFBCB00E4E73F /* TCHTexturePool.mm */,
 				5546B00528E7255D0045809C /* TCH_TouchEngine.h */,
-				55D4BD522937DFDC00F71BBC /* MetalRendererAnimation.h */,
-				55D4BD532937DFDC00F71BBC /* MetalRendererAnimation.m */,
+				55D4BD522937DFDC00F71BBC /* Animation.h */,
+				55D4BD532937DFDC00F71BBC /* Animation.m */,
+				559D68D43007E2D400BB3D5B /* Geometry.h */,
+				559D68D53007E2D400BB3D5B /* Geometry.cpp */,
+				55C19A42302C93B200EEC9A5 /* Color.h */,
+				55C19A43302C93B200EEC9A5 /* Vec.h */,
 			);
 			path = "Hello TouchEngine";
 			sourceTree = "<group>";
@@ -227,11 +236,12 @@
 				55E526A72875B8B20043868A /* MetalRenderer.mm in Sources */,
 				558D6CDF2811AF830036F5AB /* ViewController.m in Sources */,
 				55F2EDC22887F7510038362A /* TCHTexture.mm in Sources */,
+				559D68D63007E2D400BB3D5B /* Geometry.cpp in Sources */,
 				558D6CE62811AF840036F5AB /* main.m in Sources */,
 				558D6CDC2811AF830036F5AB /* AppDelegate.m in Sources */,
 				55F2EDC52887F7620038362A /* TCHSharedEvent.mm in Sources */,
 				55B591E6288EFBCB00E4E73F /* TCHTexturePool.mm in Sources */,
-				55D4BD542937DFDC00F71BBC /* MetalRendererAnimation.m in Sources */,
+				55D4BD542937DFDC00F71BBC /* Animation.m in Sources */,
 				55E526AC287849CE0043868A /* Shaders.metal in Sources */,
 				55555DBA287C86AD006AA5C0 /* TCHSharedTexture.m in Sources */,
 			);
@@ -257,7 +267,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -317,7 +327,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -387,6 +397,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "ca.derivative.Hello-TouchEngine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -417,6 +428,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "ca.derivative.Hello-TouchEngine";
 				PRODUCT_NAME = "$(TARGET_NAME)";

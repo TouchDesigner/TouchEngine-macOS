@@ -43,7 +43,7 @@ extern NSErrorDomain const TouchEngineRenderErrorDomain;
 - (BOOL)pause:(NSError **)error;
 @property (readwrite, weak) id<TouchEngineRenderDelegate> delegate;
 @property (readwrite, strong) TCHSharedTexture *inputTexture;
-
+@property (readwrite) double progress;
 /*
  IOSurface-backed textures are always supported, if this returns true, Metal shared textures are supported too
  */

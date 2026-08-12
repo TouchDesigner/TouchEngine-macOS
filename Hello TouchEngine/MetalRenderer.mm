@@ -71,7 +71,17 @@
 		pipelineStateDescriptor.label = @"Draw Pipeline";
 		pipelineStateDescriptor.vertexFunction = vertexFunction;
 		pipelineStateDescriptor.fragmentFunction = fragmentFunction;
-		pipelineStateDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat;
+		
+		MTLRenderPipelineColorAttachmentDescriptor *colorAttachment = pipelineStateDescriptor.colorAttachments[0];
+		
+		colorAttachment.pixelFormat = mtkView.colorPixelFormat;
+		colorAttachment.blendingEnabled = YES;
+		colorAttachment.alphaBlendOperation = MTLBlendOperationAdd;
+		colorAttachment.rgbBlendOperation = MTLBlendOperationAdd;
+		colorAttachment.sourceRGBBlendFactor = MTLBlendFactorOne;
+		colorAttachment.sourceAlphaBlendFactor = MTLBlendFactorOne;
+		colorAttachment.destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+		colorAttachment.destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
 		
 		_drawPipeline = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
 																error:&error];
@@ -80,9 +90,6 @@
 			self = nil;
 			return self;
 		}
-		
-		_backgroundColor = [NSColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
-		_foregroundColor = [NSColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
 	}
 	return self;
 }
@@ -90,6 +97,11 @@
 - (void)drawInMTKView:(nonnull MTKView *)view
 {
 	[self fillTexture];
+	
+	view.clearColor = MTLClearColorMake(self.backgroundColor.redComponent,
+										self.backgroundColor.greenComponent,
+										self.backgroundColor.blueComponent,
+										self.backgroundColor.alphaComponent);
 	
 	MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
 	if (renderPassDescriptor == nil)
@@ -262,9 +274,10 @@
 		
 		const TextureFillFragmentArguments arguments = {{halfw, halfh},
 			point,
-			{static_cast<float>(self.backgroundColor.redComponent), static_cast<float>(self.foregroundColor.redComponent)},
-			{static_cast<float>(self.backgroundColor.greenComponent), static_cast<float>(self.foregroundColor.greenComponent)},
-			{static_cast<float>(self.backgroundColor.blueComponent), static_cast<float>(self.foregroundColor.blueComponent)}};
+			{0.0f, static_cast<float>(self.foregroundColor.redComponent)},
+			{0.0f, static_cast<float>(self.foregroundColor.greenComponent)},
+			{0.0f, static_cast<float>(self.foregroundColor.blueComponent)},
+			{0.0f, static_cast<float>(self.foregroundColor.alphaComponent)}};
 		
 		[encoder setVertexBytes:quadVertices
 						 length:sizeof(quadVertices)

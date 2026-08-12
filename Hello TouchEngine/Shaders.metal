@@ -53,7 +53,7 @@ fillFragmentShader(FillRasterizerData in [[stage_in]],
 	return float4(mix(arguments->red.x, arguments->red.y, amount),
                   mix(arguments->green.x, arguments->green.y, amount),
                   mix(arguments->blue.x, arguments->blue.y, amount),
-                  1.0);
+                  mix(arguments->alpha.x, arguments->alpha.y, amount));
 }
 
 struct DrawRasterizerData

@@ -97,6 +97,41 @@ TE_EXPORT
 TEResult TEMetalTextureSetCallback(TEMetalTexture *texture, TEMetalTextureCallback TE_NULLABLE callback, void * TE_NULLABLE info);
 
 /*
+ Metal Allocations - see TEAllocation.h for functions common to all allocations
+ */
+typedef struct TEMetalBufferAllocation_ TEMetalBufferAllocation;
+
+typedef void (*TEMetalBufferAllocationCallback)(id<MTLBuffer> buffer, size_t size, TEObjectEvent event, void * TE_NULLABLE info);
+
+TE_EXPORT
+id<MTLBuffer> TEMetalBufferAllocationGetBuffer(const TEMetalBufferAllocation *allocation);
+
+TE_EXPORT
+TEResult TEMetalBufferAllocationSetCallback(TEMetalBufferAllocation *allocation, TEMetalBufferAllocationCallback TE_NULLABLE callback, void * TE_NULLABLE info);
+
+/*
+ Metal Buffers - see TEBuffer.h for functions common to all buffers
+ */
+typedef struct TEMetalBuffer_ TEMetalBuffer;
+
+typedef void (*TEMetalBufferCallback)(TEMetalBufferAllocation *allocation, size_t offset, size_t size, TEObjectEvent event, void * TE_NULLABLE info);
+
+/*
+ Creates a buffer backed by a Metal buffer allocation
+ Access to the content of the underlying MTLBuffer must only occur within the region defined by
+  TEBufferGetOffset() and TEBufferGetSize()
+ */
+TE_EXPORT
+TEMetalBuffer *TEMetalBufferCreate(id<MTLDevice> device, size_t size, TEMetalBufferCallback TE_NULLABLE callback, void * TE_NULLABLE info);
+
+/*
+ Sets 'callback' to be invoked for object use and lifetime events - see TEObjectEvent in TEObject.h.
+ This replaces (or cancels) any callback previously set on the TEMetalBuffer.
+ */
+TE_EXPORT
+TEResult TEMetalBufferSetCallback(TEMetalBuffer *buffer, TEMetalBufferCallback TE_NULLABLE callback, void * TE_NULLABLE info);
+
+/*
  Metal Graphics Contexts - see TEGraphicsContext.h for functions common to all graphics contexts.
  */
 
@@ -118,7 +153,7 @@ TE_EXPORT TEResult TEMetalContextCreate(id<MTLDevice> device, TEMetalContext * T
 
 /*
  Returns via 'formats' the MTLPixelFormats supported by the instance.
- This may change during configuration of an instance, and must be queried after receiving TEEventInstanceReady
+ This may change during configuration of an instance, and must be queried after receiving TEEventInstanceDidConfigure
  'formats' is an array of MTLPixelFormat, or NULL, in which case the value at counts is set to the number of available formats.
  'count' is a pointer to an int32_t which should be set to the number of available elements in 'formats'.
  If this function returns TEResultSuccess, 'count' is set to the number of MTLPixelFormats filled in 'formats'
