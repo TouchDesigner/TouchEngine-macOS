@@ -4,12 +4,17 @@
 
  * The following function has **CHANGED** its parameters and your code **MUST** be updated:
  	- TEInstanceConfigure() - takes a TEUIMode
- * Adds support for geometry data as input and output for POP operators (see TEPoints.h)
+ * Adds support for geometry data as input and output for POP operators (see TEGeometry.h)
  * TouchEngine can optionally be configured to allow user components to open windows
  * Python functions on user components can be called and results returned to the host
  * Adds TEInstanceLinkGetStateForValue() for parameters with multiple values
  * Adds TEInstanceLinkGetIdentifier() to find links by domain and name
  * Some functions have been renamed and the old versions marked deprecated
+ * Fix a memory leak in TEInstanceLinkGetObjectValue()
+ * Fix an issue which could cause unexpected texture output after an instance was reconfigured
+ * Fix multiple issues affecting very large CHOP or DAT input and output
+ * Fix an issue which could cause a hang in some circumstances
+ * macOS Intel builds are no longer supported
 
 ## 3.3
 
